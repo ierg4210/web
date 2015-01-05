@@ -1,0 +1,548 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"wob",
+				"wobhash_data"
+			],
+			[
+				"Mock",
+				"MockDumpPhantomJSDownloader"
+			],
+			[
+				"rich",
+				"richDownloader"
+			],
+			[
+				"redire",
+				"redirect-to-yahoo"
+			],
+			[
+				"redirect",
+				"redirect-to-form1"
+			],
+			[
+				"unex",
+				"unexpectedUrls"
+			],
+			[
+				"form1",
+				"form1link"
+			],
+			[
+				"job",
+				"jobName"
+			],
+			[
+				"mis",
+				"missingUrls"
+			],
+			[
+				"expec",
+				"expectedUrls"
+			],
+			[
+				"poll",
+				"pollInterval"
+			],
+			[
+				"integra",
+				"integration-test-web"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"",
+				"Snippet: #!/usr/bin/env"
+			],
+			[
+				"project",
+				"Project: Save As"
+			],
+			[
+				"settings",
+				"Preferences: AutoPep8 Settings – Default"
+			],
+			[
+				"pep8",
+				"Preferences: AutoPep8 Settings – Default"
+			],
+			[
+				"format",
+				"PEP8: Format Code"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/adon/projects/ierg4210-web"
+	],
+	"file_history":
+	[
+		"/Users/adon/projects/ierg4210-web/schedule.html",
+		"/Users/adon/projects/ierg4210-web/index.html",
+		"/Users/adon/projects/gryffin/le/downloader/incl/extractors.js",
+		"/Users/adon/projects/gryffin/le/downloader/extractors.py",
+		"/Users/adon/projects/gryffin/le/middlewares/scannerbrokers.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/flower-0.7.3-py2.7.egg/flower/templates/broker.html",
+		"/Users/adon/projects/gryffin/tests/node_modules/mocha/node_modules/debug/browser.js",
+		"/Users/adon/projects/gryffin/tests/node_modules/mocha/node_modules/glob/test/bash-results.json",
+		"/Users/adon/projects/gryffin/le/benchmark.sh",
+		"/Users/adon/projects/gryffin/le/spiders/anonymous.py",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/ynpm/node_modules/npm/lib/cache/add-remote-git.js",
+		"/Users/adon/projects/gryffin/tests/node_modules/redis/lib/to_array.js",
+		"/Users/adon/projects/gryffin/tests/unit/test_deferred_downloader.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_phantom_downloader.py",
+		"/Users/adon/projects/gryffin/le/downloader/phantomjs.py",
+		"/Users/adon/projects/gryffin/le/utils/deferredprocess.py",
+		"/Users/adon/projects/gryffin/le/middlewares/dedupslowly.py",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-test05.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-test04.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-test03.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-test01.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-test02.js",
+		"/Users/adon/projects/gryffin/setup/ylinux/site-packages/python_hashes-0.1-py2.7.egg",
+		"/Users/adon/projects/gryffin/benchmark/parallel.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_sqlmap.py",
+		"/Users/adon/projects/gryffin/tests/node_modules/sso/node_modules/request/tests/test-errors.js",
+		"/Users/adon/projects/gryffin/tests/integration/tmp/cookies.js",
+		"/Users/adon/projects/gryffin/tests/integration/tmp/cookiesandtemplate.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab2-templatedCookies.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-singleseed.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab-templated.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/crawlerlab1-framedForms.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/basicform.js",
+		"/Users/adon/projects/gryffin/le/downloader/render.js",
+		"/Users/adon/projects/gryffin/tests/package.json",
+		"/Users/adon/projects/gryffin/Makefile",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/request/form.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_spider.py",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/basicframes.js",
+		"/Users/adon/projects/gryffin/scheduler/clients/scanner_loop.py",
+		"/Users/adon/Dropbox/Docs/thesis/tex/abstract.tex",
+		"/Users/adon/Dropbox/Docs/thesis/untitled folder/tex-20140403/thesis.tex",
+		"/Users/adon/Dropbox/Docs/thesis/tex/thesis.tex",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/sre_compile.py",
+		"/Users/adon/projects/gryffin/tests/node_modules/istanbul/node_modules/js-yaml/node_modules/argparse/examples/sub_commands.js",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/tests/test_urlparse_monkeypatches.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Twisted-13.2.0-py2.7-macosx-10.9-x86_64.egg/twisted/runner/test/test_procmontap.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/setuptools/tests/test_packageindex.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_poke.py",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/basicforminform.js",
+		"/Users/adon/projects/gryffin/tests/integration/domcrawl/basicform2.js",
+		"/Users/adon/projects/gryffin/settings.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/request/__init__.py",
+		"/Users/adon/projects/gryffin/thirdparty/sqlmap/lib/request/httpshandler.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/tornado-4.0.2-py2.7-macosx-10.9-x86_64.egg/tornado/test/httpclient_test.py",
+		"/Users/adon/projects/gryffin/eval/casper/helpers.js",
+		"/Users/adon/projects/gryffin/thirdparty/sqlmap/lib/request/__init__.py",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/request/request.js",
+		"/Users/adon/projects/gryffin/setup/requirements.txt",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/request/rpc.py",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/redis-commander/node_modules/browserify/node_modules/http-browserify/lib/request.js",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/__init__.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/lxml-3.2.3-py2.7-macosx-10.9-x86_64.egg/lxml/html/formfill.py",
+		"/Users/adon/projects/gryffin/thirdparty/sqlmap/waf/fortiweb.py",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/ynpm/node_modules/npm/test/tap/peer-deps-invalid/file-ok.js",
+		"/Users/adon/projects/gryffin/virtualenv/bin/flower",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/ynpm/node_modules/npm/lib/cache/add-named.js",
+		"/Users/adon/projects/gryffin/virtualenv/bin/activate",
+		"/Users/adon/projects/gryffin/le/middlewares/deduphistory.py",
+		"/Users/adon/projects/gryffin/le/middlewares/dedupfast.py",
+		"/Users/adon/projects/gryffin/eval/scrapy/dedupslowly.py",
+		"/Users/adon/projects/gryffin/CONTRIBUTING.md",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/ynpm/node_modules/npm/node_modules/node-gyp/gyp/pylib/gyp/easy_xml.py",
+		"/Users/adon/projects/gryffin/eval/casper/events.js",
+		"/Users/adon/projects/gryffin/tests/integration/ytcookie.js",
+		"/Users/adon/projects/gryffin/prodscans/scantargets.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/encodings/raw_unicode_escape.py",
+		"/Users/adon/projects/gryffin/README.md",
+		"/Users/adon/projects/gryffin/tests/node_modules/istanbul/node_modules/js-yaml/test/samples-common/dump-empty-collections.js",
+		"/Users/adon/projects/gryffin/eval/casper/download.js",
+		"/Users/adon/projects/gryffin/tests/integration/ytcookie.js.DISABLED",
+		"/Users/adon/projects/gryffin/ui/src/public/views/ondemand/index.dust.js",
+		"/Users/adon/projects/gryffin/ui/src/views/ondemand/index.dust",
+		"/Users/adon/projects/gryffin/thirdparty/sqlmap/tamper/versionedkeywords.py",
+		"/Users/adon/projects/gryffin/ui/src/routes/ondemand.js",
+		"/Users/adon/projects/gryffin/ui/src/node_modules/redis-commander/node_modules/optimist/node_modules/wordwrap/example/center.js",
+		"/Users/adon/projects/gryffin/tests/node_modules/istanbul/node_modules/js-yaml/test/unported/recursive.former-dumper-error",
+		"/Users/adon/projects/gryffin/scripts/redis_cleanup.py",
+		"/Users/adon/projects/gryffin/ui/src/tests/test_dashboard.js",
+		"/Users/adon/projects/gryffin/ui/src/routes/jobs.js",
+		"/Users/adon/projects/gryffin/le/jobmanager.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/encodings/mac_arabic.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/encodings/string_escape.py",
+		"/Users/adon/projects/gryffin/scrapy.cfg",
+		"/Users/adon/projects/gryffin/tests/unit/test_scanmus.py",
+		"/Users/adon/projects/gryffin/scripts/test_cookies.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_lookingglass.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/kombu-3.0.12-py2.7.egg/kombu/tests/test_entities.py",
+		"/Users/adon/projects/gryffin/tests/integration/sqlmap/test_sqlmap_node.py",
+		"/Users/adon/projects/gryffin/tests/test_000001.py",
+		"/Users/adon/projects/gryffin/tests/test_firescan.py",
+		"/Users/adon/projects/gryffin/tests/test_lookingglass.py",
+		"/Users/adon/projects/gryffin/tests/test_tpjs.py",
+		"/Users/adon/projects/gryffin/tests/test_twisted.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_shell_plugin.py",
+		"/Users/adon/projects/gryffin/tests/unit/util.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_tpjs.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_manager.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_item_pipeline.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_middleware_dedupslowly.py",
+		"/Users/adon/projects/gryffin.sublime-project",
+		"/Users/adon/Library/Application Support/Sublime Text 3/Packages/AutoPep8/AutoPep8.sublime-settings",
+		"/Users/adon/Library/Application Support/Sublime Text 3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/Users/adon/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/Users/adon/projects/gryffin/tests/unit/test_middleware_wobprocessor.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_jobmanager.py",
+		"/Users/adon/projects/gryffin/tests/unit/test_linkextractor.py.INAPPLICABLE",
+		"/Users/adon/projects/gryffin/tests/unit/test_firescan.py.DISABLED",
+		"/Users/adon/projects/gryffin/tests/unit/test_downloader_rich.py.DISABLED",
+		"/Users/adon/projects/gryffin/tests/unit/__init__.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/zope.interface-3.8.0-py2.7-macosx-10.9-x86_64.egg/zope/interface/tests/unitfixtures.py",
+		"/Users/adon/projects/gryffin/load_test/submit.py",
+		"/Users/adon/projects/gryffin/load_test/settings.py",
+		"/Users/adon/projects/gryffin/prodscans/test.csv",
+		"/Users/adon/projects/gryffin/tox.ini",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/pyOpenSSL-0.13.1-py2.7-macosx-10.9-x86_64.egg/OpenSSL/test/test_crypto.py",
+		"/Users/adon/projects/gryffin/virtualenv/lib/python2.7/site-packages/tornado-4.0.2-py2.7-macosx-10.9-x86_64.egg/tornado/test/test.crt",
+		"/Users/adon/projects/gryffin/load_test/targets.py"
+	],
+	"find":
+	{
+		"height": 30.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/adon/projects/gryffin/le",
+			"/Users/adon/projects/gryffin"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"wobhash_prefix",
+			"type",
+			"datatype",
+			"type",
+			"MockDumpPhantomJSDownloader2",
+			"MockDumpPhantomJSDownloader1",
+			"connecterr",
+			"dscrawlerlabtest2",
+			"'dscrawlerlabtest2'",
+			"crawler",
+			"logics",
+			"dscrawlerlab2",
+			"dsTestCrawlerLab2",
+			"window",
+			"dsinttestcrawl2",
+			"present",
+			"client",
+			"seeds",
+			"relative",
+			".log",
+			"commented",
+			"comments",
+			"re_rela",
+			"relative",
+			"child",
+			"comments",
+			"crawl1",
+			"iframe",
+			"form1",
+			"default",
+			"callback",
+			"start_urls",
+			"render.js",
+			"data",
+			"childframes",
+			"l['da",
+			"24 hours",
+			"D:",
+			"FilterSubdomainMiddleware",
+			"le.middlewares.filtersubdomain.FilterSubdomainMiddleware",
+			"mock",
+			"mock.",
+			"html",
+			"xmlre",
+			"textre",
+			"TextResponse",
+			"HtmlResponse",
+			"XmlRes",
+			"='",
+			"board"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"MockDumpPhantomJSDownloader",
+			"jobName",
+			"dscrawlerlabtest2",
+			"dscrawlerlab2",
+			"dsTestCrawlerLab2",
+			"crawl2",
+			"key",
+			" "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 30.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.autopep8":
+	{
+		"height": 118.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "web.sublime-project",
+	"replace":
+	{
+		"height": 56.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"brokers",
+				"le/middlewares/scannerbrokers.py"
+			],
+			[
+				"extrac",
+				"le/downloader/extractors.py"
+			],
+			[
+				"extra",
+				"le/downloader/incl/extractors.js"
+			],
+			[
+				"deferr",
+				"le/utils/deferredprocess.py"
+			],
+			[
+				"phantom",
+				"le/downloader/phantomjs.py"
+			],
+			[
+				"test_deferr",
+				"tests/unit/test_deferred_downloader.py"
+			],
+			[
+				"extracto",
+				"le/downloader/extractors.py"
+			],
+			[
+				"make",
+				"Makefile"
+			],
+			[
+				"makef",
+				"Makefile"
+			],
+			[
+				"ded",
+				"le/middlewares/dedupslowly.py"
+			],
+			[
+				"scanner",
+				"scheduler/clients/scanner_loop.py"
+			],
+			[
+				"ex",
+				"le/downloader/extractors.py"
+			],
+			[
+				"test_spider",
+				"tests/unit/test_spider.py"
+			],
+			[
+				"http/req",
+				"virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/request/__init__.py"
+			],
+			[
+				"http/requ",
+				"virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/http/request/form.py"
+			],
+			[
+				"http/request",
+				"ui/src/node_modules/redis-commander/node_modules/browserify/node_modules/http-browserify/lib/request.js"
+			],
+			[
+				"anon",
+				"le/spiders/anonymous.py"
+			],
+			[
+				"dedu",
+				"le/middlewares/dedupslowly.py"
+			],
+			[
+				"dedups",
+				"eval/scrapy/dedupslowly.py"
+			],
+			[
+				"scannerbr",
+				"le/middlewares/scannerbrokers.py"
+			],
+			[
+				"settings",
+				"settings.py"
+			],
+			[
+				"render",
+				"le/downloader/render.js"
+			],
+			[
+				"extract",
+				"le/downloader/extractors.py"
+			],
+			[
+				"defer",
+				"le/utils/deferredprocess.py"
+			],
+			[
+				"d",
+				"le/utils/deferredprocess.py"
+			],
+			[
+				"jobs.js",
+				"ui/src/routes/jobs.js"
+			],
+			[
+				"test_sql",
+				"tests/unit/test_sqlmap.py"
+			],
+			[
+				"tests/unit/",
+				"tests/unit/test_lookingglass.py"
+			],
+			[
+				"mid",
+				"virtualenv/lib/python2.7/site-packages/Scrapy-0.22.2-py2.7.egg/scrapy/tests/test_middleware.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 231.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
