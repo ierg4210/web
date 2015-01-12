@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>IERG4210 File-based XSS Demo</title>
+</head>
+
+<body>
+Sorry! Thanks to your IE content-sniffing MIME-type detector!<br/>
+Here I can launch XSS attack!!
+<script type="text/javascript">
+alert('XSS');
+</script>
+</body>
+</html>

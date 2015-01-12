@@ -1,0 +1,24 @@
+<style>li{color:#F00}</style>
+<div id="content"></div>
+<script id="tmpl-hello" type="text/x-handlebars-template">
+    <p>Hello, I am {{name}}. I have {{toys.length}} toys:</p>
+    <ul>{{#toys}}<li>{{model}} by {{make}}</li>{{/toys}}</ul>
+</script>
+
+<script src="handlebars.2.0.0.min.js"></script>
+<script>
+// data in JSON format, possibly fetched over AJAX
+var json = {
+    "name": "Adon",
+    "toys": [
+        {"model": "iPhone", "make": "Apple"},
+        {"model": "Xperia", "make": "Sony"}
+    ]
+};
+
+// compile the template on-the-fly
+var tmpl = Handlebars.compile(document.getElementById('tmpl-hello').innerHTML);
+
+// bind the data with template, put result back
+document.getElementById('content').innerHTML = tmpl(json);
+</script>

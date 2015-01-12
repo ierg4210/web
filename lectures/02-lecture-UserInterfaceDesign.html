@@ -1,0 +1,710 @@
+﻿<!DOCTYPE html>
+<!--
+  Google HTML5 slide template
+
+  Authors: Luke Mahé (code)
+           Marcin Wichary (code and design)
+           
+           Dominic Mazzoni (browser compatibility)
+           Charles Chen (ChromeVox support)
+
+  URL: http://code.google.com/p/html5slides/
+-->
+<html>
+<head>
+<title>IERG4210 Lecture 2 - User Interface Design</title>
+<meta charset='utf-8'>
+<link href="//fonts.googleapis.com/css?family=Buenard:400,700" rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="incl/html5slides.js"></script>
+<link href="incl/edited.css" rel="stylesheet" type="text/css" />
+</head>
+<body style='display: none'>
+<section class='slides layout-regular template-default'>
+	<article id="cover">
+		<h4 class="university">The Chinese University of Hong Kong</h4>
+		<h1 class="courseTitle">IERG4210 Web Programming and Security</h1>
+		<h1 class="title">User Interface Design<br/>HTML, CSS, and Templating</h1>
+		<p class="instructor">Dr. Adonis FUNG</p>
+		<p class="dept orange">Information Engineering, CUHK</p>
+		<p class="dept purple">Product Security Engineering, Yahoo!</p>
+		<p class="email"><a href="mailto:phfung@ie.cuhk.edu.hk">phfung@ie.cuhk.edu.hk</a></p>
+		<div id="footer"><div class="copyright">Copyright. All Rights Reserved.</div> CUHK - IERG4210 Web Programming and Security (2015 Spring)</div>
+		<span class="actions">Press "P" for printer-friendly mode</span>
+	</article>
+	<article>
+		<h3>Agenda</h3>
+		<ul class="build">
+			<li>
+				<p>Client-side Languages for User Interface (UI) Design</p>
+				<ul class="build">
+					<li>Structure and Content - <em class="orange">HTML</em></li>
+					<li>Presentation - <em class="orange">Cascading Style Sheet (CSS)</em></li>
+					<li>Behavior - <em class="orange">Javascript (JS)</em></li>
+				</ul>
+			</li>
+			<li>The Best Practices and their Benefits</li>
+			<li>Implementations and Examples</li>
+			<li>Templating</li>
+		</ul>
+		<div class="source">Ref: <a href="http://code.google.com/edu/submissions/html-css-javascript/">Google Code University - HTML, CSS, and Javascript from the Ground Up</a></div>
+	</article>
+	<article>
+		<h3>How the UI code is/was organized</h3>
+		<div class="build"> <img class="centered" style="margin:30px auto" src="incl/02-cleanhtml.png" />
+			<ul class="denser">
+				<li>Since 1996 - HTML, CSS, Javascript intermixed</li>
+				<li>Since 2002 - <span class="red">Separation of presentation from content</span></li>
+				<li>Since 2005 - Clean Separation; More Javascript than static HTML (thanks to the era of AJAX)</li>
+			</ul>
+			<p class="smaller"><br/>(Demo) View the Source Code of this page</p>
+		</div>
+		<div class="source">Ref: <a href="http://www.youtube.com/watch?v=60O1CJqh8IM">http://www.youtube.com/watch?v=60O1CJqh8IM</a></div>
+	</article>
+	<article>
+		<h3>The Best Practices (1/3)</h3>
+		<h4 class="build red">
+			<p>Separation of Content, Presentation and Behavior Code</p>
+		</h4>
+		<ul class="build">
+			<li><span class="orange">Accessibility</span> - Clean Semantic HTML is good for non-visual browsers and crawlers (Search Engine Optimization or <em class="red">SEO</em>)</li>
+			<li><span class="orange">Portability</span> - A new CSS stylesheet presents the same content in a different way (e.g. mobile webpage)</li>
+			<li><span class="orange">Maintainability</span> - CSS by designers, HTML and Javascript by programmers</li>
+			<li><span class="orange">Reduced Latency</span> - Separated files of CSS and JS can be cached in browsers and reused across pages</li>
+		</ul>
+		<div class="source">Ref: <a href="http://www.youtube.com/watch?v=60O1CJqh8IM">http://www.youtube.com/watch?v=60O1CJqh8IM</a></div>
+	</article>
+	<article>
+		<h3>The Best Practices (2/3)</h3>
+		<h4 class="build red">
+			<p>Graceful Degradation / Progressive Enhancement</p>
+		</h4>
+		<ul class="build">
+			<li>Legacy Browsers may not support new features like HTML 5</li>
+			<li>Users may disable CSS and Javascript</li>
+			<li class="orange">i.e. Make your webpages functional whenever possible</li>
+		</ul>
+		<h4 class="build red">
+			<p>Don't Ignore Errors</p>
+		</h4>
+		<ul class="build">
+			<li>404 is BAD! Redirect legacy hyperlinks to new pages</li>
+			<li>Javascript errors can prohibit page load</li>
+		</ul>
+		<div class="source">Ref: <a href="http://www.youtube.com/watch?v=60O1CJqh8IM">http://www.youtube.com/watch?v=60O1CJqh8IM</a></div>
+	</article>
+	<article>
+		<h3>The Best Practices (3/3)</h3>
+		<h4 class="build red">
+		<p>Naming Convention of <u>public</u> URLs <br/>for Search Engine Optimization (SEO)</p>
+		</h4>
+		<div class="build">
+			<ul class="build lessmargin">
+				<li>Keep it Short</li>
+				<li>Use Keywords in Foldernames and Filenames</li>
+				<li>Avoid Querystrings (e.g. <code>?page=11</code> is meaningless to human)</li>
+				<li>Hypenated Filename (e.g. <code>User-Interface-Design.html</code>)</li>
+				<li class="orange">i.e. Readable for both Humans and Bots</li>
+			</ul>
+			<p class="smaller"><br/>Good Example: http://web.mit.edu/is/usability/usability-guidelines.html</p>
+		</div>
+<div class="source">Ref: <a href="http://www.seomoz.org/blog/11-best-practices-for-urls">http://www.seomoz.org/blog/11-best-practices-for-urls</a></div>
+	</article>
+	<article>
+		<h2>HTML</h2>
+	</article>
+	<article class="smaller">
+		<h3>Why bother to teach HTML?</h3>
+		<div class="build">
+			<q class="orange">Why are we building things all from scratch? Why not HTML editor?</q>
+			<q style="font-size:90%">We're unfortunately still like teaching stupid machines how to <span class="red">interpret</span> content!! <br/>What is our future? stronger AI, ...?</q>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Basics (1/2)</h3>
+		<ul class="build">
+			<li>Defining the Structure and Content:
+				<section>
+					<pre class="prettyprint lessmargin">&lt;!-- Some Comments Here --&gt;<br>&lt;tagName attributeName=&quot;attributeValue&quot;&gt;Some Content&lt;/tagName&gt;
+&lt;!-- Closing a content-less tag --&gt;<br>&lt;tagName attrName=&quot;attrVal&quot; /&gt;<br>
+</pre>
+				</section>
+			</li>
+			<li>Avoid styling in HTML (Best Practice):
+				<section>
+					<pre class="prettyprint lessmargin">&lt;!-- Some BAD Examples that look the same: --&gt;<br>&lt;h1 align=&quot;center&quot;&gt;Hello World!&lt;/h1&gt;
+&lt;center&gt;&lt;font size=&quot;7&quot;&gt;Hello World!&lt;/font&gt;&lt;/center&gt;<br><br>&lt;!-- Good Example: <br>     - style can be reused and put in a separate file --&gt;<br>&lt;style&gt;.centered{text-align:center}&lt;/style&gt;<br>&lt;h1 class=&quot;centered&quot;&gt;Hello World!&lt;/h1&gt;
+				</pre>
+				</section>
+			</li>
+		</ul>
+	</article>
+	<article>
+		<h3>HTML Basics (2/2)</h3>
+		<ul class="build">
+			<li>A simple HTML5 Document:
+				<section>
+					<pre class="prettyprint lessmargin">&lt;!DOCTYPE html&gt;&lt;!-- placed at top to tell what HTML version --&gt;<br>&lt;html&gt;
+  &lt;!-- head tag contains some meta-info tags --&gt;
+  &lt;head&gt;
+    &lt;!-- To let the browser knows the correct encoding: --&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;title&gt;IERG4210 HTML5 Hello World!&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;!-- body tag contains some content --&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+				</section>
+			</li>
+			<li>(Tool) HTML Validator to check syntax: <a href="http://validator.w3.org/">W3C Validator </a></li>
+		</ul>
+		<div class="source">Ref: <a href="http://www.html-5-tutorial.com/doctype.htm">http://www.html-5-tutorial.com/doctype.htm</a></div>
+	</article>
+	<article>
+		<h3>Semantic HTML</h3>
+		<div class="build">
+			<h4 class="yellow">HTML5: Every tag/attribute carries a meaning!</h4>
+			<p>Examples:<br/>
+			 - &lt;div id="header"&gt; v.s. <span class="green">&lt;header&gt;</span><br/>
+			 - &lt;input type="text" /&gt; v.s. <span class="green">&lt;input type="number"&gt;</span></p>
+			<ul class="build">
+				<li>No special visual effect, they are the same for browsers; <br/>BUT they could mean different things to robots.</li>
+				<li>To help Google interpret accurately where to index, <br/> e.g. &lt;nav&gt; for menu, &lt;article&gt; (but &lt;header&gt;) for content</li>
+				<li>Other HTML5 Semantic Tags: <br/>&lt;header&gt;, &lt;footer&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;article&gt;, etc...</li>
+			</ul>
+			<div class="source">Ref: <a href="https://developer.mozilla.org/en-US/docs/Sections_and_Outlines_of_an_HTML5_document">https://developer.mozilla.org/en-US/docs/Sections_and_Outlines_of_an_HTML5_document</a></div>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Headers - &lt;h1&gt;...&lt;h6&gt;</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>&lt;h1&gt;Header 1&lt;/h1&gt;<br/>&lt;h2&gt;Header 2&lt;/h2&gt;<br/>&lt;h3&gt;Header 3&lt;/h3&gt;
+...
+&lt;h6&gt;Header 6&lt;/h6&gt;
+</pre>
+			</section>
+			<p class="fitPageWidth">SEO: <code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> are of higher importance than <code>&lt;p&gt;</code></p>
+			<p class="fitPageWidth smaller">Live Editor Usage: Edit on LHS, and a "Enter" key triggers update on RHS</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Paragraph and Lists - &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>&lt;p&gt;Paragraph 1&lt;/p&gt;<br/>
+&lt;p&gt;Unordered List&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;item 1&lt;/li&gt;
+  &lt;li&gt;item 2&lt;/li&gt;
+&lt;/ul&gt;<br/>
+&lt;p&gt;Ordered List&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;item 1&lt;/li&gt;
+  &lt;li&gt;item 2&lt;/li&gt;
+&lt;/ol&gt;</pre>
+			</section>
+			<p class="fitPageWidth">Note: &lt;p&gt; and &lt;li&gt; both introduce a line break</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Strong and Emphasis - &lt;strong&gt;, &lt;em&gt;</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;p&gt;Below are more semantic!&lt;/p&gt;
+&lt;strong&gt;Strong&lt;/strong&gt;
+&lt;em&gt;Emphasis&lt;/em&gt;
+
+&lt;p&gt;Below are more stylistic!&lt;/p&gt;
+&lt;b&gt;bold&lt;/b&gt;
+&lt;i&gt;italic&lt;/i&gt;</pre>
+			</section>
+			<p class="fitPageWidth">Note: &lt;strong&gt; and &lt;em&gt; are favored according to our best practices</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Hyperlink - &lt;a&gt; with Absolute URL</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;h1&gt;Absolute URLs:&lt;/h1&gt;<br>&lt;a href=&quot;http://yahoo.com/&quot;&gt;HTTP&lt;/a&gt; <br/>&lt;a href=&quot;https://yahoo.com/&quot;&gt;HTTPS&lt;/a&gt;
+&lt;!--Follows the Current Protocol:--&gt;
+&lt;a href=&quot;//yahoo.com/&quot;&gt;HTTP/S&lt;/a&gt;</pre>
+			</section>
+			<p class="fitPageWidth">&nbsp;</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Hyperlink - &lt;a&gt; with Relative URL</h3>
+		<div class="build">
+			<p>Given the following directory structure:</p>
+			<ul class="smaller denser">
+				<li>incl/
+					<ul>
+						<li>cuhk-logo.png</li>
+						<li>test2.html</li>
+					</ul>
+				</li>
+				<li>test1.html</li>
+			</ul>
+			<section class="demoHTML smaller">
+				<pre>&lt;h1&gt;In test1.html:&lt;/h1&gt;
+&lt;a href=&quot;incl/test2.html&quot;&gt;test2.html&lt;/a&gt;</pre>
+				<iframe src="test1.html"></iframe>
+			</section>
+			<section class="demoHTML smaller">
+				<pre>&lt;h1&gt;In incl/test2.html:&lt;/h1&gt;
+&lt;a href=&quot;../test1.html&quot;&gt;test1.html&lt;/a&gt;
+&lt;a href=&quot;/web/tutorials/tutorial01.pdf&quot;&gt;T01&lt;/a&gt;</pre>
+				<iframe src="incl/test2.html"></iframe>
+			</section>
+			
+			<p class="fitPageWidth">Hover the hyperlinks and see how the relative URLs are translated to full URLs based on the current URL</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Image - &lt;img&gt;</h3>
+		<div class="build">
+			<p>Given the same directory structure:</p>
+			<ul class="smaller denser">
+				<li>incl/
+					<ul>
+						<li>cuhk-logo.png</li>
+						<li>test2.html</li>
+					</ul>
+				</li>
+				<li>test1.html</li>
+			</ul>
+			<section class="demoHTML">
+				<pre>&lt;h1&gt;Img in Absolute URL:&lt;/h1&gt;
+&lt;img src=&quot;https://www.iso.cuhk.edu.hk/english/images/resource/cuhk-emblem/hor_4c.jpg&quot; /&gt;
+
+&lt;h1&gt;Img in Relative URL:&lt;/h1&gt;
+&lt;img src=&quot;incl/cuhk-logo.png&quot; /&gt;<br>&lt;img src=&quot;/web/lectures/incl/cuhk-logo.png&quot; /&gt;
+				</pre>
+			</section>
+			<p class="fitPageWidth">&nbsp;</p>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Table - &lt;table&gt; (1/2)</h3>
+		<div class="build">
+			<p>&lt;td&gt; is a general table cell, while &lt;th&gt; stands for a header cell</p>
+			<section class="demoHTML">
+				<pre>&lt;table&gt;<br>  &lt;tr&gt;&lt;!--table row--&gt;<br>    &lt;th&gt;First Name&lt;/th&gt;
+    &lt;th&gt;Last Name&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Alan&lt;/td&gt;
+    &lt;td&gt;Turing&lt;/td&gt;<br>  &lt;/tr&gt;
+  &lt;tr&gt;<br>    &lt;td&gt;Eugene&lt;/td&gt;
+    &lt;td&gt;Peterson&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;<br>
+</pre>
+			</section>
+		</div>
+	</article>
+	<article>
+		<h3>HTML Table - &lt;table&gt; (2/2)</h3>
+		<div class="build">
+			<p>Multiple rows/columns</p>
+			<section class="demoHTML">
+				<pre>&lt;table&gt;<br>  &lt;tr&gt;&lt;th&gt;First Name&lt;/th&gt;
+      &lt;th&gt;Last Name&lt;/th&gt;&lt;/tr&gt;
+<br>  &lt;!--Merging the cell in next row--&gt;
+  &lt;tr&gt;&lt;td rowspan=&quot;2&quot;&gt;Alan&lt;/td&gt;
+      &lt;td&gt;Turing&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Tam&lt;/td&gt;&lt;/tr&gt;
+
+  &lt;!--Merging the cell in next column--&gt;
+  &lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;
+        Superman!!!!!!!!!!!&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;<br>
+</pre>
+			</section>
+		</div>
+	</article>
+	<article>
+		<h2>HTML + CSS</h2>
+	</article>
+	<article>
+		<h3>CSS Basics</h3>
+		<ul class="build">
+			<li>3 ways to include CSS:
+				<div class="build">
+					<pre class="lessmargin">
+&lt;!-- External CSS file can be used across pages --&gt;
+&lt;link href=&quot;incl/styles.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;
+</pre>
+					<pre class="lessmargin">
+&lt;!-- Embedded CSS tag can be used for a specific page--&gt;
+&lt;style&gt;p{color:#F00}&lt;/style&gt;
+</pre>
+					<pre class="lessmargin">
+&lt;!-- Inline CSS does not conform to the Best Practice --&gt;
+&lt;p&gt;inline &lt;span style=&quot;color:#00FF00&quot;&gt;CSS&lt;/span&gt;&lt;/p&gt;
+</pre>
+				</div>
+			</li>
+			<li>A CSS rule in External CSS file or Embedded CSS tag:
+				<pre class="lessmargin lang-css">selector1{
+  propertyName1:propertyVal1;
+  propertyName2:propertyVal2
+}</pre> 
+				<p class="smaller">Clearly, inline CSS takes only those properties in the braces</p>
+			</li>
+		</ul>
+	</article>
+	
+	<article>
+		<h3>CSS Selectors - Rule Precedence - Inheritance</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  *,body{color:#00F}
+  p{color:#F00}
+  p.highlight{background:#FF0}
+  p.highlight2{background:#CCC}
+  #uniqueId1{font-size:30px;color:#00FF00}
+&lt;/style&gt;
+
+&lt;h3&gt;inherited the color!&lt;/h3&gt;
+&lt;p&gt;Oh&lt;/p&gt;
+&lt;p class=&quot;highlight&quot;&gt;My&lt;/p&gt;
+&lt;p class=&quot;highlight highlight2&quot;&gt;God!&lt;/p&gt;
+&lt;p id=&quot;uniqueId1&quot;&gt;overriden the color&lt;/p&gt;</pre>
+			</section>
+			<p class="fitPageWidth smaller">(Demo) Inspect the output using Browser Developer Tools (e.g., Firebug/Firefox/Chrome)</p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Selector - Rule Precedence - Specificity</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  p{color:#F00}
+  p.highlight{background:#FF0}
+  #uniq1,#uniq2{color:#00FF00}
+  div p.highlight{background:#CCC}
+&lt;/style&gt;
+
+&lt;p class=&quot;highlight&quot;&gt;Hello World!&lt;/p&gt;
+&lt;p class=&quot;highlight&quot; id=&quot;uniq1&quot;&gt;Yo!&lt;/p&gt;
+&lt;div id=&quot;uniq2&quot;&gt;
+  &lt;p class=&quot;highlight&quot;&gt;Hello!&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+			</section>
+			<p class="smaller">Generally, precedence is calculated with a point system: inline &gt; id &gt; class &gt; element</p>
+			<p class="fitPageWidth smaller">(Midterm/Exam) Rule Precedence</p>
+			<div class="source">MUST SEE Reference and Examples: <a href="http://css-tricks.com/specifics-on-css-specificity/">http://css-tricks.com/specifics-on-css-specificity/</a></div>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Selectors for Decendent Elements</h3>
+		<div class="build">
+			<p>Example: CSS Horizontal Menu</p>
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  .menu{padding:0;list-style:none}
+  .menu li{font-size:9px;display:inline}
+&lt;/style&gt;
+&lt;nav&gt;&lt;!-- &lt;nav&gt; is a semantic tag! --&gt;
+  &lt;ul class=&quot;menu&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#a&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#b&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#c&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+			</section>
+			<p class="fitPageWidth smaller"><code>.menu li</code> selects every decendent element <code>&lt;li&gt;</code> of the element applying <code>.menu</code></p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Selectors - Link Pseudo-Classes</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  .menu a:link{color:#00F}
+  .menu a:hover{font-weight:bold}
+  .menu a:visited{color:#F00}
+&lt;/style&gt;
+&lt;nav&gt;
+  &lt;ul class=&quot;menu&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#a&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#b&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#c&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;a href=&quot;#&quot;&gt;Unaffected!&lt;/a&gt;</pre>
+			</section>
+			<p class="fitPageWidth">&nbsp;</p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Selectors - User Actions Pseudo-Classes</h3>
+		<div class="build">
+			<p>Example: Mouse-over &quot;MENU&quot; which makes use of <code> :hover</code>!</p>
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  nav ul{display:none}
+  nav:hover ul{display:block}
+&lt;/style&gt;
+&lt;nav&gt;
+  &lt;h3&gt;MENU&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#a&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#b&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#c&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+Some Content</pre>
+			</section>
+			<p class="fitPageWidth">&nbsp;</p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Selectors - A Structural Pseudo-Class</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  ul li:nth-child(even){color:#CCC}
+  ul li:nth-child(2n){background:#333}
+  ul li:nth-child(2n+1){background:#EEE}
+&lt;/style&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Home&lt;/li&gt;
+  &lt;li&gt;About Us&lt;/li&gt;
+  &lt;li&gt;Products&lt;/li&gt;
+  &lt;li&gt;Contact Us&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+			</section>
+			<p class="fitPageWidth"><code>n</code> starts at zero and increments by 1 every time<br/>&nbsp; &nbsp;- What will 3n+1 select? (Need a demo?)<br/>&nbsp; &nbsp;- Children list is one-indexed.</p>
+		</div>
+	</article>
+	<article class="nobackground">
+		<h3>More on Selectors</h3>
+		<iframe src="http://www.w3.org/TR/css3-selectors/#contents"></iframe>
+	</article>
+	<article>
+		<h3>CSS Styles: Font Color, Size and Height</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  .para1{color:#0F0;line-height:150%}
+  .para2{color:#F00;font-size:150%}
+&lt;/style&gt;
+
+&lt;p class=&quot;para1&quot;&gt;Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go.&lt;/p&gt;
+
+&lt;p class=&quot;para2&quot;&gt;Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go.&lt;/p&gt;
+</pre>
+			</section>
+			<p class="fitPageWidth smaller">More: <code>font-weight:bold</code>; <code>font-style:italic</code>; <code>text-decoration:underline</code></p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Styles: Text Alignment</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>
+&lt;style&gt;
+  .title{text-align:center}
+  .para{text-align:justify;color:#F00}
+  .right{text-align:right}
+&lt;/style&gt;
+
+&lt;h1 class=&quot;title&quot;&gt;Joshua 1:9&lt;/h1&gt;
+&lt;p class=&quot;para&quot;&gt;Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go.&lt;/p&gt;
+&lt;p class=&quot;right&quot;&gt;Copyright. NIV.&lt;/p&gt;
+</pre>
+			</section>
+			<p class="fitPageWidth">&nbsp;</p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Styles: Positioning</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>&lt;style&gt;
+  nav ul{display:none;position:absolute;margin:-20px}
+  nav:hover ul{display:block}
+&lt;/style&gt;
+&lt;nav&gt;
+  &lt;h3&gt;MENU&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#a&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#b&quot;&gt;About Us&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#c&quot;&gt;Contact Us&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;&lt;p&gt;Some Content&lt;/p&gt;</pre>
+			</section>
+			<p class="fitPageWidth"><code>position:absolute|relative|fixed|static</code><br/>&nbsp; -<code>fixed</code> is to avoid being scrolled away</p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Styles: The Box Model</h3>
+		<ul class="build smaller">
+			<li>The Box Model as displayed in Firebug for the element <code>ul</code>
+			:<img src="incl/02-boxmodel.png" alt="boxmodel" width="650" height="290" /></li>
+			<li>position layer: <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code></li>
+			<li>margin layer: <code>margin-top</code>, <code>margin-right</code>, <code>margin-bottom</code>, <code>margin-left</code></li>
+			<li>border layer: <code>border-top</code>, <code>border-right</code>, <code>border-bottom</code>, <code>border-left</code></li>
+			<li>padding layer: <code>padding-top</code>, <code>padding-right</code>, <code>padding-bottom</code>, <code>padding-left</code></li>
+			<li>Or equiv., <code>margin:1px 2px 3px 4px;</code> for top, right, bottom and left direction</li>
+		</ul>
+	</article>
+	<article>
+		<h3>CSS Styles: The Box Model (Demo)</h3>
+		<div class="build">
+			<section class="demoHTML">
+				<pre>&lt;style&gt;
+  p.wide{margin:10px;padding:5px}
+  p.border,p.wide{border:3px solid #CCC}
+  p.LRonly{border-top:0;border-bottom:0}
+  p.lifted{margin-top:-50px}
+&lt;/style&gt;
+&lt;p&gt;Content 1&lt;/p&gt;
+&lt;p class=&quot;wide&quot;&gt;Content 2&lt;/p&gt;
+&lt;p class=&quot;border&quot;&gt;Content 3&lt;/p&gt;
+&lt;p class=&quot;border LRonly&quot;&gt;Content 4&lt;/p&gt;
+&lt;p class=&quot;lifted&quot;&gt;Content 5&lt;/p&gt;
+</pre>
+			</section>
+			<p class="fitPageWidth">Negative Values are accepted. </p>
+		</div>
+	</article>
+	<article>
+		<h3>CSS Styles: Tableless Layout Example</h3>
+		<div class="build">
+			<section class="demoHTML larger">
+				<pre class="smaller">&lt;!-- Try resizing the width to 180px --&gt;
+&lt;style&gt;
+  ul.table{width:240px;height:240px;
+    margin:0;padding:0;list-style:none;
+    overflow:auto}
+  ul.table li{width:70px;height:90px;
+    float:left;border:1px solid #CCC}
+  .clear{clear:both}
+&lt;/style&gt;
+&lt;ul class=&quot;table&quot;&gt;
+  &lt;li&gt;&lt;img src=&quot;incl/02-souvenir.jpg&quot; /&gt;Product 1&lt;/li&gt;
+  &lt;li&gt;Product 2&lt;/li&gt;&lt;li&gt;Product 3&lt;/li&gt;
+  &lt;li&gt;Product 4&lt;/li&gt;&lt;li&gt;Product 5&lt;/li&gt;
+  &lt;li&gt;Product 6&lt;/li&gt;&lt;li&gt;Product 7&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p class=&quot;clear&quot;&gt;Total: 7&lt;/p&gt;</pre>
+			</section>
+			<p class="fitPageWidth"></p>
+		</div>
+	</article>
+	<article class="nobackground">
+		<h3>Browser Compatibility Issues</h3>
+		<a href="http://caniuse.com"><img class="fitwidth" src="incl/02-caniuse.png"/></a>
+	</article>
+	<article class="nobackground">
+		<h3>More on CSS3</h3>
+		<a href="http://www.css3maker.com/"><img class="fitwidth" src="incl/02-css3maker.png"/></a>
+	</article>
+	<article>
+		<h3>Templating Framework</h3>
+		<p>Definition: bind(data in often JSON format, a template in HTML)</p>
+		<ul class="build">
+			<li>
+				Motivations:
+				<ul>
+					<li>
+						<strong class="purple">FAST!</strong> when using client-side/JS templating<br/>
+						- data binding work shifted from server to browser<br/>
+						- made possible to cache relatively static templates 
+					</li>
+					<li><span class="orange">Iterations</span> (data with repeating presentation patterns)</li>
+					<li><span class="pink">Internationalization and localization</span> (<a href="http://en.wikipedia.org/wiki/Internationalization_and_localization">i18n</a>)</li>
+					<li><span class="green">Further separation presentation from content</span></li>
+				</ul>
+			</li>
+			<li>Examples: <a href="http://handlebarsjs.com/">Handlebars</a>, <a href="http://linkedin.github.io/dustjs/">Dust</a>, <a href="https://angularjs.org/">Angular</a>, React, Mustache, etc...</li>
+		</ul>
+	</article>
+	<article>
+		<h3>Handlebars Example</h3>
+		<div class="build"><pre class="lessmargin">&lt;style&gt;li{color:#F00}&lt;/style&gt;&lt;div id="content"&gt;&lt;/div&gt;
+&lt;script id="tmpl-hello" type="text/x-handlebars-template"&gt;
+    &lt;p&gt;Hello, I am {{name}}. I have {{toys.length}} toys:&lt;/p&gt;
+    &lt;ul&gt;{{#toys}}&lt;li&gt;{{model}} by {{make}}&lt;/li&gt;{{/toys}}&lt;/ul&gt;
+&lt;/script&gt;
+&lt;script src="handlebars.2.0.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// data in JSON format, possibly fetched over AJAX
+var json = {
+    "name": "Adon",
+    "toys": [  {"model": "iPhone", "make": "Apple"},
+               {"model": "Xperia", "make": "Sony"}    ]
+};
+// compile the template on-the-fly
+var tmpl = Handlebars.compile(
+	document.getElementById('tmpl-hello').innerHTML);
+// bind the data with template, put result back
+document.getElementById('content').innerHTML = tmpl(json);
+&lt;/script&gt;</pre></div>
+	</article>
+	<article>
+		<h3>Handlebars Example (Demo)</h3>
+		<a href="incl/02-handlebars-example1.html"><img style="width:80%" src="incl/02-handlebars-example1.png"/></a>
+		<p><a href="http://jsfiddle.net/nq1ymb2s/5/">Demo at jsfiddle</a></p>
+	</article>
+	<article>
+		<h3>Learn Handlebars</h3>
+		<ul class="build">
+			<li><span class="orange">Core Language Components</span> (inherited from mustache)
+				<ul>
+					<li><a href="http://handlebarsjs.com/builtin_helpers.html#iteration">iterations</a></li>
+					<li><a href="http://handlebarsjs.com/builtin_helpers.html#conditionals">conditionals</a></li>
+					<li><a href="https://github.com/wycats/handlebars.js#partials">partials</a></li>
+				</ul>
+			</li>
+			<li><span class="green">Performance Issues</span> (to be further discussed)
+				<ul>
+					<li>Server-side v.s. Client-side data binding</li>
+					<li>Caching templates</li>
+					<li>Pre-compilation v.s. on-the-fly compilation</li>
+				</ul>
+			</li>
+			<li><span class="purple">Security Issues:</span> (to be later covered)
+				<ul>
+					<li>Security: Output Escaping v.s. Unsafe/Raw Output</li>
+				</ul>
+			</li>
+		</ul>
+	</article>
+	<article>
+		<h3>Some Logistics...</h3>
+		<ul class="build">
+			<li>A quick overview/tutorial on Handlebars: <a href="http://blog.teamtreehouse.com/getting-started-with-handlebars-js">Part 1</a>, <a href="http://blog.teamtreehouse.com/handlebars-js-part-2-partials-and-helpers">Part 2</a></li>
+			<li>Online Quiz ready. Deadline on coming Friday</li>
+			<li>Tutorials will start this week</li>
+			<li>Assignment Specification for Phase 1 <br/> - to be released on or before Friday</li>
+		</ul>
+	</article>
+</section>
+</body>
+</html>
