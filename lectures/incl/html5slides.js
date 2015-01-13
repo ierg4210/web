@@ -595,7 +595,7 @@ function renderHTML(iframe) {
 			doc.body.insertBefore(n, script);
 			doc.body.removeChild(script);
 	}
-	try{prettyPrint()}catch(e){}
+	prettyPrint && prettyPrint();
 }
 function addDemoHTML() {
   var els = document.querySelectorAll('section.demoHTML'), iframe;
