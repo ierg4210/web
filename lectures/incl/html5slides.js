@@ -611,14 +611,13 @@ function addDemoHTML() {
 		  for (var i = 0, pre, els = this.querySelectorAll('section.demoHTML pre'); pre = els[i]; i++) {
 			  if (pre && 'true' != pre.contentEditable) {
 				pre.contentEditable = true;
-				var iframe = this.parentNode.querySelector('iframe');
-				iframe.addEventListener('blur', function(e){
-					renderHTML(iframe);
+				pre.addEventListener('blur', function(e){
+					renderHTML(this.parentNode.querySelector('iframe'));
 				}, false);
 
 				pre.addEventListener('keyup', function(e){
 				  if (e.keyCode == 13 || e.keyIdentifier == 'Enter') { // Enter
-					renderHTML(iframe);
+					renderHTML(this.parentNode.querySelector('iframe'));
 				  }
 				}, false);
 
