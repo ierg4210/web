@@ -582,6 +582,21 @@ function addPrettify() {
 };
 
 // adon
+function renderHTML(iframe) {
+	var doc = iframe.contentWindow.document;
+	doc.body.innerHTML = this.textContent;
+	for (var i = 0, script, n, scripts = doc.body.getElementsByTagName('script'); 
+		script = scripts[i];
+		i++) {
+			n = doc.createElement('script');
+			script.src && (n.src = script.src);
+			script.textContent && (n.textContent = script.textContent);
+			n.type = 'text/javascript';
+			doc.body.insertBefore(n, script);
+			doc.body.removeChild(script);
+	}
+	(typeof prettyPrint !== undefined) && prettyPrint();
+}
 function addDemoHTML() {
   var els = document.querySelectorAll('section.demoHTML'), iframe;
   for (var i = 0, el; el = els[i]; i++) {
@@ -596,23 +611,17 @@ function addDemoHTML() {
 		  for (var i = 0, pre, els = this.querySelectorAll('section.demoHTML pre'); pre = els[i]; i++) {
 			  if (pre && 'true' != pre.contentEditable) {
 				pre.contentEditable = true;
+				var iframe = this.parentNode.querySelector('iframe');
+				iframe.addEventListener('blur', function(e){
+					renderHTML(iframe);
+				}, false);
+
 				pre.addEventListener('keyup', function(e){
 				  if (e.keyCode == 13 || e.keyIdentifier == 'Enter') { // Enter
-					var doc = this.parentNode.querySelector('iframe').contentWindow.document;
-					doc.body.innerHTML = this.textContent;
-					for (var i = 0, script, n, scripts = doc.body.getElementsByTagName('script'); 
-						script = scripts[i];
-						i++) {
-						n = doc.createElement('script');
-						script.src && (n.src = script.src);
-						script.textContent && (n.textContent = script.textContent);
-						n.type = 'text/javascript';
-						doc.body.insertBefore(n, script);
-						doc.body.removeChild(script);
-					}
-					prettyPrint && prettyPrint();
+					renderHTML(iframe);
 				  }
 				}, false);
+
 				pre.addEventListener('keydown', function(e){e.stopPropagation();}, false);
 				var evt = document.createEvent("KeyboardEvent");
 				(evt.initKeyEvent)
