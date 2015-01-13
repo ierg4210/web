@@ -612,12 +612,12 @@ function addDemoHTML() {
 			  if (pre && 'true' != pre.contentEditable) {
 				pre.contentEditable = true;
 				pre.addEventListener('blur', function(e){
-					renderHTML(this.parentNode.querySelector('iframe'));
+					renderHTML.call(this, this.parentNode.querySelector('iframe'));
 				}, false);
 
 				pre.addEventListener('keyup', function(e){
 				  if (e.keyCode == 13 || e.keyIdentifier == 'Enter') { // Enter
-					renderHTML(this.parentNode.querySelector('iframe'));
+					renderHTML.call(this, this.parentNode.querySelector('iframe'));
 				  }
 				}, false);
 
