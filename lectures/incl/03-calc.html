@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+	#keypad{width:135px}
+	#keypad input{width:30px;height:30px;margin:2px 0}
+	#keypad .half{width:64px}
+	#keypad .full,#field{width:132px}
+	</style>
+</head>
+
+<body>
+<h3>A Deadly Simple Calculator</h3>
+<input id="field" type="number" />
+<div id="keypad">
+	<input type="button" value="7" />
+	<input type="button" value="8" />
+	<input type="button" value="9" />
+	<input type="button" value="/" />
+
+	<input type="button" value="4" />
+	<input type="button" value="5" />
+	<input type="button" value="6" />
+	<input type="button" value="*" />
+
+	<input type="button" value="1" />
+	<input type="button" value="2" />
+	<input type="button" value="3" />
+	<input type="button" value="-" />
+
+	<input type="button" value="." />
+	<input type="button" value="0" />
+	<input type="button" value="=" />
+	<input type="button" value="+" />
+</div>
+<a href="view-source:" target="_blank">View Source</a>
+<script type="text/javascript">
+var f = document.getElementById('field'),
+	k = document.getElementById('keypad'),
+	buttons = k.getElementsByTagName('input'),
+	lastValue = null,
+	lastOperator = null, 
+	resetField = false,
+	handler = function(event) {
+		var val = this.value, temp;
+		if (val >= 0 && val <= 9 || val == '.') {
+			if (resetField) {
+				f.value = '';
+				resetField = false;
+			} else if (f.value.indexOf('.') >= 0 && val == '.')
+				return;
+			f.value += val.toString();
+		} else if (lastOperator == null) {
+			lastOperator = val;
+			lastValue = parseFloat(f.value);
+			resetField = true;
+		} else if (lastValue !== null) {
+			temp = parseFloat(f.value);
+			switch(lastOperator) {
+				case '+': lastValue += temp; break;
+				case '-': lastValue -= temp; break;
+				case '*': lastValue *= temp; break;
+				case '/': lastValue /= temp; break;
+			}
+			f.value = lastValue;
+			lastOperator = (val == '=') ? null : val;
+			resetField = true;
+		}
+	};
+for (var i = 0, btn; btn = buttons[i]; i++) 
+	btn.onclick = handler;
+
+f.value = '';
+</script>
+</body>
+</html>
