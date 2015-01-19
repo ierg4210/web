@@ -1,0 +1,45 @@
+section {
+	&.demoHTML{
+		clear:both;
+		height:420px;
+		&>pre{float:left;width:67%;height:100%;overflow:auto;white-space:pre-wrap};
+		&>iframe{float:right;width:33%;height:100%;padding:5px;margin:40px 0};
+	}
+	&.demo0HTML{
+		height:auto;
+		&>pre,&>iframe{margin:5px 0;height:33px;pading:2px;overflow:hidden};
+	}
+	&.demo1HTML{
+		height:auto;
+		&>pre, &>iframe{margin:5px 0;height:53px;pading:2px;overflow:hidden};
+	}
+	&.demo2HTML{
+		height:auto;
+		&>pre,&>iframe{margin:5px 0;height:90px;pading:2px;overflow:hidden};
+	}
+	&.demoHTML2{
+		clear:both;
+		&>pre{float:none;width:auto;height:auto;overflow:auto;white-space:pre-wrap};
+		&>iframe{position:relative;width:400px;height:300px;margin:-320px 0;opacity:.2};
+		&:hover>iframe{opacity:.75};
+	}
+
+	&.lessmargin, &.lessmargin>pre, &.lessmargin>iframe{margin:5px 0};
+	&.smaller{height:110px};
+	&.smaller>pre,&.smaller>iframe{margin:10px 0;overflow:hidden};
+	&.larger{height:530px;margin-top:-20px};
+}
+
+ul.denser,ul.denser li{margin:0 20px;padding:0}
+.orange{color:#F0AD00}
+.pink{color:#F69}
+.purple{color:#780099}
+.smaller{font-size:20px;line-height:normal}
+pre.smaller{font-size:16px;line-height:normal}
+pre.lessmargin,table.lessmargin{margin:5px 0}
+img.bottomright{position:absolute;right:0;bottom:0}
+
+pre.prettyprint{margin-top:8px}
+
+slides>slide>hgroup+article{margin-top:30px}
+slides>slide:not(.nobackground):before{background:url(../../images/cuhk-logo-smaller.png);}

@@ -1,36 +1,970 @@
-﻿<!DOCTYPE html>
 <!--
-  Google HTML5 slide template
+Google IO 2012/2013 HTML5 Slide Template
 
-  Authors: Luke Mahé (code)
-           Marcin Wichary (code and design)
-           
-           Dominic Mazzoni (browser compatibility)
-           Charles Chen (ChromeVox support)
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
 
-  URL: http://code.google.com/p/html5slides/
+URL: https://code.google.com/p/io-2012-slides
 -->
+<!DOCTYPE html>
 <html>
 <head>
-<title>IERG4210 Lecture 3 - User Interface Programming</title>
-<meta charset='utf-8'>
-<link href="//fonts.googleapis.com/css?family=Buenard:400,700" rel='stylesheet' type='text/css' />
-<script type="text/javascript" src="incl/html5slides.js"></script>
-<link href="incl/edited.css" rel="stylesheet" type="text/css" />
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <meta name="viewport" content="initial-scale=0.8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/ierg4210.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
 </head>
-<body style='display: none'>
-<section class='slides layout-regular template-default'>
-	<article id="cover">
-		<h4 class="university">The Chinese University of Hong Kong</h4>
-		<h1 class="courseTitle">IERG4210 Web Programming and Security</h1>
-		<h1 class="title">User Interface Programming <br/>JavaScript, DOM, and Events<br/>To be released.</h1>
-		<p class="instructor">Dr. Adonis FUNG</p>
-		<p class="dept orange">Information Engineering, CUHK</p>
-		<p class="dept purple">Product Security Engineering, Yahoo!</p>
-		<p class="email"><a href="mailto:phfung@ie.cuhk.edu.hk">phfung@ie.cuhk.edu.hk</a></p>
-		<div id="footer"><div class="copyright">Copyright. All Rights Reserved.</div> CUHK - IERG4210 Web Programming and Security (2015 Spring)</div>
-		<span class="actions">Press "P" for printer-friendly mode</span>
-	</article>
-</section>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Recall</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>
+          <p>Client-side Languages for User Interface (UI) Design</p>
+          <ul class="build">
+            <li>Structure and Content - <em class="orange">HTML</em></li>
+            <li>Presentation - <em class="orange">Cascading Style Sheet (CSS)</em></li>
+            <li>Behavior - <em class="orange">JavaScript (JS)</em></li>
+          </ul>
+        </li>
+        <li>Covered HTML and CSS in last lecture; JavaScript today!<br/><br/></li>
+        <li>Recent advances in JavaScript shifts the paradigm of web programming. Rich web applications are nowadays heavy in client-side code</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Agenda</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>The <span class="orange">JavaScript language</span> itself
+          <ul>
+            <li>Basics, Variables</li>
+            <li>Functions, Object-oriented Programming</li>
+            <li>Arrays, Objects</li>
+            <li>Looping over Arrays and Objects with for and while</li>
+            <li> String Concatenation with Array</li>
+          </ul>
+        </li>
+        <li class="orange">Data Object Model (DOM)</li>
+        <li class="orange">Events</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>JavaScript Basics (1/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li class="orange">Governs the page behavior, to make it interactive</li>
+        <li>Inclusion Methods into HTML (Similar to that of CSS):
+          <ul><li>External JS file:
+            <pre class="prettyprint" data-lang="html">&lt;script type=&quot;text/javascript&quot; src=&quot;code.js&quot;&gt;&lt;/script&gt;</pre></li>
+          <li>Embedded JS code (<a href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Default_CSP_restrictions#Restricted_scripts">Why AVOID</a>?):
+            <pre class="prettyprint" data-lang="html">&lt;script type=&quot;text/javascript&quot;&gt;
+//do something here in JavaScript
+&lt;/script&gt;
+</pre></li>
+          <li>Inline JS for an onclick event (<a href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Default_CSP_restrictions#Restricted_scripts">Why AVOID</a>?):
+            <pre class="prettyprint" data-lang="html">&lt;input type=&quot;button&quot; onclick=&quot;alert('Hello!')&quot; value=&quot;Click Me!&quot; /&gt;</pre>
+          </li>
+          </ul>
+        </li>
+        <li><p class="orange"><code>&lt;script&gt;</code> tags block rendering of subsequent content</p>
+          <p class="smaller">Therefore, as opposed to CSS, put them inside <code>&lt;body&gt;</code> instead of <code>&lt;head&gt;</code> whenever possible</p>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>JavaScript Basics (2/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>An <span class="orange">Object-oriented</span> Scripting Language
+          <ul>
+            <li><span class="orange">Dynamic Typing</span> - Variable types (number/string/boolean/null/undefined) are generally dynamic. 
+              <a href="http://www.2ality.com/2014/10/typed-javascript.html">(versus statically-typed, pros and cons?)</a>
+            </li>
+            <li><span class="orange">Interpreted Language</span> - Just-In-Time (JIT) Compilation at browsers</li>
+            <li><span class="orange">Syntax</span> - Similar to C, Java</li>
+          </ul>
+        </li>
+        <li>You're expected to master in C/C++/Java taught in CSCI Introduction to Computing :)</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Variables (1/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>
+          <p><span class="orange">Dynamic Typing</span> - The type changes with its assigned value</p>
+          <pre class="prettyprint" data-lang="javascript">
+var foo = 1;     // (typeof foo) becomes 'number'
+foo = &quot;hello&quot;;   // (typeof foo) becomes 'string'
+</pre>
+        </li>
+        <li>JavaScript uses <span class="orange">Function Scoping</span> (C uses block-level scoping)
+          <ul>
+            <li>
+              Declaring in a function with <code>var</code> becomes local to that function</li>
+            <li>Declaring without <code>var</code> becomes global variable, i.e. under <code>window</code>
+              <pre class="prettyprint" data-lang="javascript">
+var foo = 1;            // global variable - under window
+window.foo = 1;         // equiv. to the above
+window['foo'] = 1;      // equiv. to the above
+function a() {
+  bar = 2; foo = 2;     // global variables
+  var yo = 1;          // local variable to function a()
+}
+</pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Variables (2/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>
+          More examples on <span class="orange">Function Scoping</span> (good for test/exam):
+          <pre class="prettyprint" data-lang="javascript">
+var foo = 1;
+function a(){
+  var bar = 2, foo = 2;
+  foo2 = 3;
+  return foo;
+}
+
+a() == 2;                  //true
+foo == 1;                  //true
+foo2 == 3;                 //true
+foo2 === '3'               //false - type checking failed
+typeof bar == 'undefined'  //true</pre>
+        </li>
+        <li class="smaller"><code>===</code> will check if the LHS and RHS are of the same type and value (or address for arrays and objects)</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Functions</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Function Declaration Approaches:</span>
+          <pre class="prettyprint" data-lang="javascript">function add(param1, param2) { return param1 + param2; }</pre>
+          <pre class="prettyprint" data-lang="javascript">var add = function(param1, param2) { return param1 + param2; }</pre>
+          <pre class="prettyprint" data-lang="javascript">function mat() {  window.add = function(p1, p2) {return p1 + p2;} };</pre>
+          <p class="smaller">According to function scoping, the first two approaches can become <span class="red">local</span>, while the last one is declaring a <span class="red">global</span> function.</p></li>
+        <li><span class="orange">Annoymous Function</span> are useful for event listeners:
+  <pre class="prettyprint" data-lang="javascript">function(param1) { /* do something here */ }</pre>
+  <p class="smaller">To be discussed in <a href="#32" onClick="gotoSlide(32)">slide 32</a>.</p></li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Basic Object-Oriented JavaScript</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>JavaScript has no such a syntax like <code>class</code>. It's also <code>function</code>. :)
+          <pre class="prettyprint" data-lang="javascript">var Person = function(name, sex){
+  this.name = name || 'Unnamed';
+  this.gender = (sex &amp;&amp; sex == 'F') ? 'F' : 'M';
+};
+Person.prototype.setName = function(name) {return this.name = name};
+Person.prototype.getName = function() {return this.name};
+Person.prototype.getGender = function() {return this.gender};
+</pre></li>
+        <li>To initialize a new instance and call the methods: 
+          <pre class="prettyprint" data-lang="javascript">var p1 = new Person('Peter', 'M'),
+    p2 = new Person('Niki', 'F'),
+    p3 = new Person();
+p1.getGender() == p3.getGender();              // true
+p3.getName() == 'Unnamed';                     // true
+p3.getName = function() {alert('overrided')};  // overriding method
+</pre>
+          <p class="smaller"><code>prototype</code> is the interface to add methods to every instance</p>
+        </li>
+      </ul>
+    </article>  
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Variable/Function Names can collide!</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Trivial Solution</span>: Make the names sufficiently long to avoid collision.</li>
+        <li>Let's view some Ugly JS Examples from HSBC:<br/>
+          <a href="view-source:https://www.ebanking.hsbc.com.hk/1/2/logon?LANGTAG=en&COUNTRYTAG=US">https://www.ebanking.hsbc.com.hk/1/2/logon?LANGTAG=en&COUNTRYTAG=US</a></li>
+        <li>Doesn't look cool at all! :(</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Namespace in JavaScript (Advanced Concept)</h2>
+    </hgroup>
+    <article>
+      <ul class="build lessmargin">
+        <li><span class="orange">Good Solution:</span> Leverage Function Scoping, group them in a namespace</li>
+        <li>
+          <pre class="prettyprint smaller" data-lang="javasript" contenteditable="true">
+(function(){
+  var cart = window.cart = {};  // global
+  
+  var a, b, c;                     // private variables
+  var calcSubTotal = function() {  // private function
+    // calculate subtotal
+  }
+  
+  cart.checkOut = function() {    // public function
+    // go to the checkout page
+  };
+  
+  cart.add = function(id, quantity) {
+    // store it in cookies/localStorage first
+    calcSubTotal();
+    // display it in the shopping list
+  };
+
+})();
+
+cart.calcSubTotal();     // undefined! as it's a private function
+cart.add();              // OK!</pre>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Arrays</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Dynamic-sized</span> - Auto extend to have more elements</li>
+        <li><span class="orange">Use as a Stack</span> - methods available: <code>push()</code>, <code>pop()</code></li>
+        <li><span class="orange">Other Useful Methods</span> - <code>join()</code>, <code>split()</code>, <code>shift()</code>, <code>indexOf()</code>, etc...<br/>
+          <pre class="prettyprint" data-lang="javascript">
+var x = new Array(), //empty array
+    y = [],          //empty array
+    z = ['Happy', 'New', 'Year', 2012];
+
+x != y                  // true - although both are of empty content
+z.push('!');            // z is ['Happy', 'New', 'Year', 2012, '!']
+z.join(' ');            // returns &quot;Happy New Year 2012 !&quot;
+z.indexOf('Year');      // returns 2 - i.e. zero-indexed
+&quot;JS is fun&quot;.split(' '); // returns ['JS', 'is', 'fun']
+                        // since String is an array of character
+</pre>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Looping over an Array (1/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Given: 
+          <pre class="prettyprint" data-lang="javascript">var z = ['Happy', 'New', 'Year', 2012];</pre>
+          </li>
+        <li><code>for</code> loop in the traditional way:
+          <pre class="prettyprint" data-lang="javascript">
+for (var i = 0; i &lt; z.length; i++) {
+  //do something with z[i], can use break and continue as in C
+}</pre>
+          </li>
+        <li>If you like <code>while</code> better:
+          <pre class="prettyprint" data-lang="javascript">
+var i = 0, length = z.length;
+while(i &lt; length) {
+  //do something with z[i], can use break and continue as in C
+  i++;
+}</pre>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Looping over an Array (2/2)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Generally, the fastest way to for-loop over an array
+          <pre class="prettyprint" data-lang="javascript">
+for (var i = 0, value; value = z[i]; z++) {
+  //do something with value
+}</pre>
+        </li>
+        <li>New approach to loop (Modern Browser support required):
+          <pre class="prettyprint" data-lang="javascript">
+z.forEach(function(value, index){
+  //do something with value
+})
+          </pre>
+          <div class="smaller">Check out more useful ones: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce</a>, etc...</div>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Objects</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Dynamic-sized</span> - Auto extend to have more elements</li>
+        <li><span class="orange">Key-Value Pairs</span> - Referenced with the key,<code></code> like a hash table
+          <pre class="prettyprint" data-lang="javascript">
+var x = new Object(), //empty object
+    y = {},           //empty object
+    z = {&quot;name&quot;:&quot;Niki&quot;,
+         &quot;today&quot;:function(){return new Date().toDateString();}};
+
+x != y;            // true - although both are of empty content
+z.age = 6;         // {&quot;name&quot;:&quot;Niki&quot;,&quot;today&quot;:func...,&quot;age&quot;:6}
+z.age == z['age']; // true - can reference like array
+z.today();         // returns &quot;Fri Jan 27 2012&quot; for example</pre>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Looping over an Object</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Traditional Approach</span>
+          <pre class="prettyprint" data-lang="javascript">for (var key in z) {
+    // z[key] gives the value, can use break and continue as in C
+}</pre>
+        </li>
+        <li><span class="orange">Array-style Approach</span>
+          <pre class="prettyprint" data-lang="javascript" contenteditable="true">Object.keys(z).every(function(key){
+    // z[key] gives the value
+    // return false means break; return true means continue;
+})</pre>
+          <p class="smaller">Reference: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Every">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Every</a></p>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>String Concatenation</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">String Concatenation</span>
+          - operator reloaded, means addition and concatenation
+          <pre class="prettyprint" data-lang="javascript">
+var w = 'Hello', x = 'World!', y = 1, z = 2012;
+w+' '+x == 'Hello World!'       // all return true
+w+x+y+z == 'HelloWorld!12012'    
+y+z+w+x == '2013HelloWorld!'
+w+x+(y+z) == 'HelloWorld!2013' </pre>
+          <span class="smaller">em... may be it's something good for midterm/exam :)</span>
+          </li>
+        <li><span class="orange">Joining an Array is Faster</span>
+          - very  often you will concat string
+          <pre class="prettyprint" data-lang="javascript">
+for (var i = 0, data = []; i &lt; 5; i++)      // fast
+  data.push(i);
+data.join(' ') == '0 1 2 3 4';              // true</pre>
+          <pre class="prettyprint" data-lang="javascript">
+for (var i = 0, data = ''; i &lt; 5; i++)      // slow
+  data += i + ' ';
+data == '0 1 2 3 4 ';                       // true, note the last space</pre>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>JavaScript Debugging in Firebug</h2>
+    </hgroup>
+    <article>
+      <ul class="build lessmargin">
+        <li>Console Tab - to test out your code
+          <div><img class="centered" src="incl/02-firebug-console.jpg" /></div>
+          </li>
+        <li>Script Tab - to debug your code line-by-line (<a href="incl/02-debug.html">Demo</a>)
+          <div><img class="centered" src="incl/02-firebug-script.jpg" /></div>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <article class="subsection">
+      <h2>JavaScript w/Data Object Model (DOM)</h2>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>DOM Basics</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Every <span class="red">&lt;tag&gt;</span> corresponds to a <span class="orange">Node Object</span>, therefore having its own methods and properties. The enclosure of tags forms a hierachiecal tree</li>
+        <li>For instance, LHS is translated into RHS<br/><img src="incl/02-htmltree.gif" align="right"/>
+          <p class="smaller">
+          <pre class="prettyprint" data-lang="html">&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;My title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;a href=&quot;#&quot;&gt;My link&lt;/a&gt;
+  &lt;h1&gt;My header&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+          </p>
+          </li>
+      </ul>
+      <div class="source">Image Source: <a href="http://www.w3schools.com/htmldom/default.asp">http://www.w3schools.com/htmldom/default.asp</a></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Referencing Elements (1/3)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Traditional Approach</span> - <code>getElementById()</code> and <code>getElementsByTagName()</code>
+          <section class="demoHTML lessmargin">
+            <pre class="prettyprint" data-lang="html">
+&lt;ul id=&quot;header&quot;&gt;
+  &lt;li&gt;Hello&lt;/li&gt;
+  &lt;li&gt;World&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type="text/javascript"&gt;
+var ul = document.getElementById('header');
+var li = ul.getElementsByTagName('li');
+li[0].style.color = '#F00';
+li[1].style.color = '#0F0';
+&lt;/script&gt;
+          </pre>
+          </section>
+          </li>
+      </ul>
+      <div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Referencing Elements (2/3)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Modern Approach</span> - Use the CSS selectors with <code>querySelector()</code> and <code>querySelectorAll()</code>
+          <section class="demoHTML lessmargin">
+            <pre class="prettyprint">
+&lt;ul id=&quot;header&quot;&gt;
+  &lt;li&gt;Hello&lt;/li&gt;
+  &lt;li&gt;World&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type="text/javascript"&gt;
+var li = document.querySelectorAll('#header li');
+li[0].style.color = '#F00';
+li[1].style.color = '#0F0';
+//re-color the second &lt;lt&gt; to #00F
+document.querySelector(
+  '#header li:last-child').style.color = '#00F';
+&lt;/script&gt;
+          </pre>
+          </section>
+          </li>
+      </ul>
+      <div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Referencing Elements (3/3)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">DOM Navigation</span> (seldom used nowadays) - <code>.parentNode</code>, <code>.childNodes</code>, <code>.nextSibling</code> etc...</li>
+        <li><img class="centered" src="incl/02-dom.png" />
+          <pre class="prettyprint lessmargin">&lt;p&gt;&lt;strong&gt;hello&lt;/strong&gt;how are you doing?&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+var p = document.querySelector('p'), 
+    strongs = document.getElementsByTagName('strong');
+
+strongs[0].parentNode == p     // true
+p.childNodes[0] == strongs[0]  // true
+&lt;/script&gt;</pre>
+        </li>
+      </ul>
+      <div class="source">Image Source: J. Resig, &quot;Pro JavaScript Techniques&quot;, p.90</div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Referencing Special Elements</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Some popular shorthands:<br/>
+          &nbsp; - <code>document.head</code> for <code>&lt;head&gt;</code><br/>
+          &nbsp; - <code>document.body</code> for <code>&lt;body&gt;</code></li>
+        <li>Referencing forms:<br/>
+          &nbsp; - <code>document.forms[n]</code> for the n-th child <code>&lt;form&gt;</code></li>
+        <li>Referencing links:<br/>
+          &nbsp; - <code>document.links[n]</code> for the n-th child <code>&lt;a&gt;</code> and <code>&lt;area&gt;</code></li>
+        <li>Referencing frames:<br/>
+          <ul>
+            <li><code>document.frames[n]</code> for the n-th child <code>&lt;frame&gt;</code>/<code>&lt;iframe&gt;</code></li>
+            <li>Inside a frame, <br/>
+              <ul class="prettyprint" data-lang="javascript">
+                <li><code>parent</code> refers to the immediate parent window</li>
+                <li><code>top</code> refers to the highest parent window that its URL is reflected in the browser location bar</li>
+              </ul>
+              </li>
+          </ul>
+          </li>
+      </ul>
+    </article>
+        
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Common DOM Methods (1/3)</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <span class="orange">Changing Content / Adding New Elements</span></div>
+      <ul class="build">
+        <li>
+          <pre class="prettyprint" data-lang="javascript">el.innerHTML = 'Your Current Time: ' + (new Date().toString());</pre>
+        </li>
+        <li>
+          <pre class="prettyprint" data-lang="javascript">// What if the string is untrusted??
+el.innerHTML = 'something &lt;img onerror=&quot;alert(\'DANGER\')&quot; /&gt;'</pre>
+        </li>
+        <li>
+          <p class="red">Indeed, we need something as follows to defend against XSS, to be discussed in later lectures</p>
+          <pre class="prettyprint" data-lang="javascript">el.innerHTML = 'something &lt;img onerror=&quot;alert(\'DANGER\')&quot; /&gt;'
+               .replace(/&lt;/g,'&amp;lt;');</pre>
+          <div class="purple">What's the difference?</div>
+        </li>
+      </ul>
+      </div>
+      <div class="source">Read &quot;Optional Reading - Resig07 - 02 Object-Oriented JavaScript&quot; for OOP</div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Common DOM Methods (2/3)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Adding New Elements (DOM-based)</span>
+          <pre class="prettyprint" data-lang="javascript">// To dynamically load a javascript file if needed
+var script = document.createElement('script');
+script.src = &quot;dynamically-loaded.js&quot;;
+script.type = &quot;text/javascript&quot;;
+// to add the script file as last child of document.body
+document.body.appendChild(script);
+// or, to add as the first child of document.body
+document.body.insertBefore(script, document.body.firstChild)</pre>
+        </li>
+        <li class="smaller">So, a few lines of code (LOC) can introduce an external file that has thousand LOC.</li>
+        <li class="smaller">Can you imagine now how to extend a <code>&lt;ul&gt;</code> list? (Hints: use &lt;li&gt;)</li>
+        <li><span class="orange">Removing Elements (DOM-based)</span>
+          <pre class="prettyprint" data-lang="javascript">document.body.removeChild(script);
+//to remove all children of el
+function(el){while(el.firstChild){el.removeChild(el.firstChild)}</pre>
+        </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Common DOM Methods (3/3)</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Changing Style Attribute (Forget this!)</span>
+          - NOT recommended
+          <pre class="prettyprint" data-lang="javascript">el.style.color = '#F00';</pre>
+          </li>
+        <li><span class="orange">Changing Class Attribute (Preferred)</span>
+          - to re-style an element and its children
+          <pre class="prettyprint" data-lang="javascript">el.className = 'newClass';</pre>
+          <pre class="prettyprint" data-lang="javascript">el.classList.add('newClass')</pre>
+          <p class="smaller"><a href="https://developer.mozilla.org/en-US/docs/Web/API/element.classList">ClassList</a> is available in modern browser</p>
+          </li>
+        <li><span class="orange">Changing the Current Location</span> - apply to the current window/frame
+          <pre class="prettyprint" data-lang="javascript">window.location.replace('test2.html');   // redirect to test2.html
+window.history.go(-1);                   // back</pre>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Events</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <p>An element generates <span class="orange">events</span> that reflect its current status, which can be registered with event listening callback functions that respond accordingly.</p>
+        <section class="lessmargin demoHTML">
+          <pre class="prettyprint">&lt;p&gt;Hello, Click Me!&lt/p&gt;
+
+&lt;script type="text/javascript"&gt;
+// assign a function to onclick handler
+document.querySelector('p').onclick = function(e){
+  // display a simple popup dialog
+  alert('You clicked hello!');
+}
+&lt;/script&gt;</pre>
+        </section>
+      </div>
+      <div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>About Events</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Asynchronous</span> - Events are fired out of order</li>
+        <li><span class="orange">Non-threaded</span> - Events get queued and fired <span class="red">one at a time</span></li>
+        <li><span class="orange">Some common types:</span>
+          <ul>
+            <li><span class="green">Mouse:</span> click, mouseover, mouseout, dragstart*, drop*</li>
+            <li><span class="green">Keyboard:</span> keydown, keypress, keyup</li>
+            <li><span class="green">Touchscreen:</span> touchstart*, touchmove*, touchend*</li>
+            <li><span class="green">Form/Input/Select:</span> submit, change, focus, blur</li>
+            <li><span class="green">Un/Loading:</span> load, beforeunload, error, readystatechange</li>
+            <li><span class="green">Timer:</span> <code>setTimeout()</code>, <code>setTimeInterval()</code></li>
+            <li class="smaller">* denotes HTML5 new events</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="source">More on Event Types: <a href="http://www.w3schools.com/html5/html5_ref_eventattributes.asp">http://www.w3schools.com/html5/html5_ref_eventattributes.asp</a></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Event Phases (W3C Model)</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <p>Event propagates over the hierarchical chain of an element, going through the capturing, target, and bubbling phases.</p>
+        <ul class="lessmargin smaller">
+          <li>For instance, the target element <code>&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;</code> is clicked below:<br/>
+            <img class="centered" src="incl/03-eventmodel.png" /></li>
+          <li>Event listeners with <span class="orange">capturing order</span>: &lt;body&gt;, &lt;div&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;</li>
+          <li>Event listeners with <span class="orange">bubbling order</span>: &lt;a&gt;, &lt;li&gt;, &lt;ul&gt;, &lt;div&gt;, &lt;body&gt;</li>
+        </ul>
+        <p class="smaller">Note: Events in IE 8 or lower only bubbles, and CANNOT be captured</p>
+      </div>
+      <div class="source">Image Source: J. Resig, "Pro JavaScript Techniques", p.114, 2007</div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Event Listeners</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Traditional Approach</span> (Cross-browser support, Bubbling)
+          <pre class="prettyprint" data-lang="javascript">el.onclick = function(e) {
+  e = e || window.event; // IE passes the event in the global window
+  alert(e.target); // e.target is a reference to the target element
+}</pre>
+          <p class="smaller build"><span>Will multiple event listeners in IE get mixed up with the single event object? Why?<br/>
+          </span> <span> &nbsp; No. Because event is non-threaded in nature as said in <a href="#28" onClick="prevSlide();prevSlide()">slide 28</a></span></p>
+          </li>
+        <li><span class="orange">W3C Standard</span> (Supported in Firefox, WebKit, IE 9, etc)
+          <pre class="prettyprint" data-lang="javascript">el.addEventListener(&quot;click&quot;, function(e) {
+  alert(e.target);
+}, false); // false for bubbling, true for capturing</pre>
+          <p class="smaller">IE 8 or below provides <code>attachEvent()</code><span class="smaller">(I don't use it personally)</span></p>
+          </li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Event Listeners - traditional or W3C?</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <p class="orange">Which is preferred, traditional or W3C? Pros and Cons?</p>
+        <ul class="build">
+          <li>Traditional is supported universally, yet risks from being overriden:
+            <div>
+              <pre class="prettyprint smaller">el.onclick = function(e) { /* given that you did something with el */ };
+
+// BAD colleage can append the following code:
+el.onclick = function(e)  { /* do his things here, which will remove yours */ };
+</pre>
+              <pre class="prettyprint smaller">
+// SMART colleage can do complex things: (Are you a SMART one!?):
+(function(){                                   // Concept of Closure, 02-reading OO JS, p.27-30
+  var <b>_onclick = el.onclick</b>;               // _onlick now becomes a local variable
+  <b>el.onclick = function(e){</b>
+    // execute your handler first if it exists
+    <b>_onclick && _onclick.call(this, e);</b>  // AND operation: test next operand if exists
+                                              // preserve the this and event object
+    /* can now do his things */
+  }
+})();                                         // execute the annonymous function itself
+</pre>
+            </div>
+            </li>
+          <li>W3C event handlers supports event capturing and cannot be overriden, yet it is not supported by IE non-standard compilant browsers </li>
+        </ul>
+      </div>
+      <div class="source fitPageWidth">More in the reading - J. Resig, "Pro JavaScript Techniques", p.123, 2007</div>
+    </article>  
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Event Listeners at Bubbling Phase</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <section class="demoHTML lessmargin">
+          <pre class="prettyprint smaller">&lt;p id=&quot;el_p&quot;&gt;
+  &lt;em&gt;
+    &lt;a href=&quot;test1.html&quot; id=&quot;el_a&quot;&gt;Click Me!&lt;/a&gt;
+  &lt;/em&gt;
+&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+var clickMe = function(e){
+  e = e || window.event;
+  alert('e.target.id:' + e.target.id
+        + ', this.id:' + this.id);},
+ el_p = document.getElementById('el_p'),
+ el_a = document.getElementById('el_a');
+
+el_p.onclick = clickMe;
+el_a.onclick = clickMe;
+
+// Expected Results:
+//  First alert: e.target.id: el_a, this.id: el_a
+// Second alert: e.target.id: el_a, this.id: el_p
+&lt;/script&gt;</pre>
+        </section>
+      </div>
+      <ul class="build smaller lessmargin">
+        <li class="red"><code>e.target</code> always refers to the target, while <code>this</code> refers to the one handling the event</li>
+        <li class="orange">The event BUBBLING order: target first, and then up to the root ancestor</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Event Listeners at Capturing Phase</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <section class="demoHTML lessmargin">
+          <pre class="prettyprint smaller">&lt;p id=&quot;el_p&quot;&gt;
+  &lt;em&gt;
+    &lt;a href=&quot;test1.html&quot; id=&quot;el_a&quot;&gt;Click Me!&lt;/a&gt;
+  &lt;/em&gt;
+&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+var clickMe = function(e){
+  alert('e.target.id:' + e.target.id
+        + ', this.id:' + this.id);},
+ el_p = document.getElementById('el_p'),
+ el_a = document.getElementById('el_a');
+ 
+el_p.addEventListener(&quot;click&quot;, clickMe, true);
+el_a.addEventListener(&quot;click&quot;, clickMe, true);
+
+// Results:
+//  First alert: e.target.id: el_a, this.id: el_p
+// Second alert: e.target.id: el_a, this.id: el_a
+&lt;/script&gt;</pre>
+        </section>
+      </div>
+      <ul class="build fitPageWidth smaller lessmargin">
+        <li class="orange">The event CAPTURING order: root ancestor first, and then down to target</li>
+        <li>Hence, as opposed to last example, <code>&lt;p&gt;</code> now handles the event before <code>&lt;a&gt;</code>.</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Prevent Default Action: <code>preventDefault()</code></h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <section class="demoHTML lessmargin">
+          <pre class="prettyprint smaller">&lt;p id=&quot;el_p&quot;&gt;
+  &lt;em&gt;
+    &lt;a href=&quot;test1.html&quot; id=&quot;el_a&quot;&gt;Click Me!&lt;/a&gt;
+  &lt;/em&gt;
+&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+var clickMe = function(e){
+  e = e || window.event;
+  e.preventDefault();   // for W3C standard
+  return false;         // for IE 8 or below
+ },
+ el_p = document.getElementById('el_p'),
+ el_a = document.getElementById('el_a');
+ 
+el_a.onclick = clickMe;
+
+// Results:
+//   No page navigation when clicked
+&lt;/script&gt;</pre>
+        </section>
+      </div>
+      <ul class="build fitPageWidth smaller lessmargin">
+        <li class="orange">The default action, page navigation to test1.html, is prevented.</li>
+        <li>This is important to stop a form submission (i.e. stopping submit event) if it is not properly validated!!</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Stop Propagation: <code>stopPropagation()</code></h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <section class="demoHTML lessmargin">
+          <pre class="prettyprint smaller">&lt;p id=&quot;el_p&quot;&gt;
+  &lt;em&gt;
+    &lt;a href=&quot;test1.html&quot; id=&quot;el_a&quot;&gt;Click Me!&lt;/a&gt;
+  &lt;/em&gt;
+&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+var clickMe = function(e){
+  e = e || window.event;
+  alert(this.id);
+  e.stopPropagation();   // for W3C standard
+  e.cancelBubble = true; // for IE 8 or below
+ },
+ el_p = document.getElementById('el_p'),
+ el_a = document.getElementById('el_a');
+
+el_a.onclick = clickMe;  // &lt;a&gt; first as bubbling
+el_p.onclick = clickMe;
+// Result: One alert appears and displays el_a,
+//         then page navigation occurs
+&lt;/script&gt;</pre>
+        </section>
+        <ul class="fitPageWidth smaller">
+          <li class="orange">Event propagation is stopped at <code>el_a</code>, therefore <code>el_p</code> does not receive the event</li>
+          <li>Note: The use of <code>&lt;iframe&gt;</code>/<code>&lt;frame&gt;</code> will implicitly block event from propagating</li>
+          <li>Note: We can avoid this even for overlapping clickable elements, if each of which is not an ancestor of the others. (Demo in Facebook Timeline Profile)</li>
+        </ul>
+      </div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>JavaScript Example</h2>
+    </hgroup>
+    <article>
+      <div class="build">
+        <iframe src="incl/03-calc.html" style="width:180px;height:400px;float:right"></iframe>
+        <ul>
+          <li>The uses of <code>.getElementById()</code> and <code>.getElementsByTagName()</code></li>
+          <li class="orange">Here, 16 event listeners are registered (1 button each), how to reduce to only one?</li>
+            <ul>
+              <li>This was one of the exam questions to assess concept of events</li>
+              <li>Hints: change less than 3 lines of code</li>
+            </ul>
+        </ul>
+      </div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Some Logistics...</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="red">Deadlines:</span>
+          <ul>
+            <li>Assignment Phase 1: Jan. 26, 2015 5PM</li>
+          </ul>
+        </li>
+        <li>Credit Card needed for AWS registrations</li>
+        <li class="purple">Classroom relocation beginning next week:<br/>
+          <ul><li>T3:30-4:15pm  LSK LT3</li><li>T4:30-6:15pm  SWH 1</li></ul>
+        </li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!--script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script-->
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
 </body>
 </html>
