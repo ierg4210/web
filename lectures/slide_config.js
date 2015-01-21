@@ -4,7 +4,7 @@ var SLIDE_CONFIG = {
     title: 'User Interface Programming',
     subtitle: 'IERG4210 Lecture 3',
     eventInfo: {
-      title: '<br/>IERG4210 Web Programming and Security, 2015 Spring. <br/>Offered by Dept. of Information Engineering, The Chinese University of Hong Kong',
+      title: '<br/>IERG4210 Web Programming and Security, 2015 Spring. <br/>Offered by Dept. of Information Engineering, The Chinese University of Hong Kong. <br/><br/>Copyright. Dr. Adonis Fung ',
     },
     useBuilds: true, // Default: true. False will turn off slide animation builds.
     usePrettify: true, // Default: true

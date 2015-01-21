@@ -30,12 +30,11 @@ URL: https://code.google.com/p/io-2012-slides
   <slide class="title-slide segue nobackground">
     <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
     <hgroup class="auto-fadein">
-      <h1 data-config-title><!-- populated from slide_config.json --></h1>
-      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-      <p data-config-presenter><!-- populated from slide_config.json --></p>
+      <h1 data-config-title>User Interface Programming</h1>
+      <h2 data-config-subtitle>IERG4210 Web Programming and Security</h2>
+      <p data-config-presenter>Dr. Adonis Fung</p>
     </hgroup>
   </slide>
-
 
   <slide>
     <hgroup>
@@ -427,10 +426,10 @@ data == '0 1 2 3 4 ';                       // true, note the last space</pre>
     <article>
       <ul class="build lessmargin">
         <li>Console Tab - to test out your code
-          <div><img class="centered" src="incl/02-firebug-console.jpg" /></div>
+          <div><img class="centered" src="incl/03-firebug-console.jpg" /></div>
           </li>
         <li>Script Tab - to debug your code line-by-line (<a href="incl/02-debug.html">Demo</a>)
-          <div><img class="centered" src="incl/02-firebug-script.jpg" /></div>
+          <div><img class="centered" src="incl/03-firebug-script.jpg" /></div>
           </li>
       </ul>
     </article>
@@ -447,9 +446,9 @@ data == '0 1 2 3 4 ';                       // true, note the last space</pre>
     <article>
       <ul class="build">
         <li>Every <span class="red">&lt;tag&gt;</span> corresponds to a <span class="orange">Node Object</span>, therefore having its own methods and properties. The enclosure of tags forms a hierachiecal tree</li>
-        <li>For instance, LHS is translated into RHS<br/><img src="incl/02-htmltree.gif" align="right"/>
-          <p class="smaller">
-          <pre class="prettyprint" data-lang="html">&lt;html&gt;
+        <li>For instance, LHS is translated into RHS<br/>
+          <img src="incl/03-htmltree.gif" style="float:left;padding-right:80px"/>
+          <pre class="prettyprint" data-lang="html" style="background:none">&lt;html&gt;
 &lt;head&gt;
   &lt;title&gt;My title&lt;/title&gt;
 &lt;/head&gt;
@@ -458,7 +457,6 @@ data == '0 1 2 3 4 ';                       // true, note the last space</pre>
   &lt;h1&gt;My header&lt;/h1&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
-          </p>
           </li>
       </ul>
       <div class="source">Image Source: <a href="http://www.w3schools.com/htmldom/default.asp">http://www.w3schools.com/htmldom/default.asp</a></div>
@@ -526,9 +524,9 @@ document.querySelector(
     </hgroup>
     <article>
       <ul class="build">
-        <li><span class="orange">DOM Navigation</span> (seldom used nowadays) - <code>.parentNode</code>, <code>.childNodes</code>, <code>.nextSibling</code> etc...</li>
-        <li><img class="centered" src="incl/02-dom.png" />
-          <pre class="prettyprint lessmargin">&lt;p&gt;&lt;strong&gt;hello&lt;/strong&gt;how are you doing?&lt;/p&gt;
+        <li><span class="orange">DOM Navigation</span> (seldom used nowadays)<br/> <code>.parentNode</code>, <code>.childNodes</code>, <code>.nextSibling</code> etc...</li>
+        <li><img src="incl/03-dom.png" style="float:left;padding-right:70px" />
+          <pre class="prettyprint lessmargin" style="background:none">&lt;p&gt;&lt;strong&gt;hello&lt;/strong&gt;how are you doing?&lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
 var p = document.querySelector('p'), 
@@ -617,7 +615,7 @@ document.body.insertBefore(script, document.body.firstChild)</pre>
         <li><span class="orange">Removing Elements (DOM-based)</span>
           <pre class="prettyprint" data-lang="javascript">document.body.removeChild(script);
 //to remove all children of el
-function(el){while(el.firstChild){el.removeChild(el.firstChild)}</pre>
+function killChildren(el){while(el.firstChild){el.removeChild(el.firstChild)}</pre>
         </li>
       </ul>
     </article>
@@ -682,12 +680,12 @@ document.querySelector('p').onclick = function(e){
             <li><span class="green">Touchscreen:</span> touchstart*, touchmove*, touchend*</li>
             <li><span class="green">Form/Input/Select:</span> submit, change, focus, blur</li>
             <li><span class="green">Un/Loading:</span> load, beforeunload, error, readystatechange</li>
-            <li><span class="green">Timer:</span> <code>setTimeout()</code>, <code>setTimeInterval()</code></li>
+            <li><span class="green">Timer:</span> <code>setTimeout()</code>, <code>setInterval()</code></li>
             <li class="smaller">* denotes HTML5 new events</li>
           </ul>
         </li>
       </ul>
-      <div class="source">More on Event Types: <a href="http://www.w3schools.com/html5/html5_ref_eventattributes.asp">http://www.w3schools.com/html5/html5_ref_eventattributes.asp</a></div>
+      <div class="source">More on Event Types: <a href="https://developer.mozilla.org/en-US/docs/Web/Events">Event reference | MDN</a></div>
     </article>
   </slide>
   <slide>
@@ -703,9 +701,8 @@ document.querySelector('p').onclick = function(e){
           <li>Event listeners with <span class="orange">capturing order</span>: &lt;body&gt;, &lt;div&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a&gt;</li>
           <li>Event listeners with <span class="orange">bubbling order</span>: &lt;a&gt;, &lt;li&gt;, &lt;ul&gt;, &lt;div&gt;, &lt;body&gt;</li>
         </ul>
-        <p class="smaller">Note: Events in IE 8 or lower only bubbles, and CANNOT be captured</p>
       </div>
-      <div class="source">Image Source: J. Resig, "Pro JavaScript Techniques", p.114, 2007</div>
+      <div class="source"><div class="smaller">Note: Events in IE 8 or lower only bubbles, and CANNOT be captured</div>Image Source: J. Resig, "Pro JavaScript Techniques", p.114, 2007</div>
     </article>
   </slide>
   <slide>
@@ -940,9 +937,7 @@ el_p.onclick = clickMe;
           </ul>
         </li>
         <li>Credit Card needed for AWS registrations</li>
-        <li class="purple">Classroom relocation beginning next week: TBA<br/>
-          <!--ul><li>T3:30-4:15pm  LSK LT3</li><li>T4:30-6:15pm  SWH 1</li></ul-->
-        </li>
+        <li class="purple">Classroom relocation beginning next week: <strong>NAH 213</strong></li>
       </ul>
     </article>
   </slide>
@@ -951,17 +946,14 @@ el_p.onclick = clickMe;
 
 </slides>
 
-<!--script>
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-</script-->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-23136362-2', 'auto');
+ga('send', 'pageview');
+</script>
 
 <!--[if IE]>
   <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
