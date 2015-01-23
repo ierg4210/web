@@ -79,7 +79,21 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
     this.container.classList.remove('layout-widescreen');
   }
 
-  this.loadConfig_(SLIDE_CONFIG);
+  this.loadConfig_({
+    // Slide settings
+    settings: {
+      useBuilds: true, // Default: true. False will turn off slide animation builds.
+      usePrettify: true, // Default: true
+      enableSlideAreas: true, // Default: true. False turns off the click areas on either slide of the slides.
+      enableTouch: true, // Default: true. If touch support should enabled. Note: the device must support touch.
+      favIcon: 'https://www.cuhk.edu.hk/favicon.ico',
+      fonts: [
+        'Open Sans:regular,semibold,italic,italicsemibold',
+        'Source Code Pro'
+      ],
+      theme: ['ierg4210'], // Add your own custom themes or styles in /theme/css. Leave off the .css extension.
+    }
+  });
   this.addEventListeners_();
   this.updateSlides_();
 
@@ -304,9 +318,6 @@ SlideDeck.prototype.renderHTMLDemo_ = function(settings) {
     var pre = el.querySelector('pre'), iframe = el.querySelector('iframe');
     if (!pre) return;
 
-    // append an iframe if does not exists
-    !iframe && el.appendChild(iframe = document.createElement('iframe'));
-
     // make it editable
     pre.contentEditable = true;
 
@@ -319,12 +330,17 @@ SlideDeck.prototype.renderHTMLDemo_ = function(settings) {
         prettyPrint();
 
     }, false);
-    self.renderIFrame_(pre, iframe);
-
     // stop propagating keystrokes
     pre.addEventListener('keydown', function(e){
       e.stopPropagation();
     }, false);
+
+    // add an iframe if not exists, and render pre in the iframe
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      el.appendChild(iframe);
+      self.renderIFrame_(pre, iframe);
+    }
 
   });
 }

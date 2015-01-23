@@ -3,7 +3,7 @@ section {
 		clear:both;
 		height:420px;
 		&>pre{float:left;width:67%;height:100%;overflow:auto;white-space:pre-wrap};
-		&>iframe{float:right;width:33%;height:100%;padding:5px;margin:40px 0};
+		&>iframe{float:right;width:33%;height:100%;margin:40px 0};
 	}
 	&.demo0HTML{
 		height:auto;
@@ -41,5 +41,15 @@ img.bottomright{position:absolute;right:0;bottom:0}
 
 pre.prettyprint{margin-top:8px}
 
-slides>slide>hgroup+article{margin-top:30px}
-slides>slide:not(.nobackground):before{background:url(../../images/cuhk-logo-smaller.png);}
+slides {
+	&>slide {
+		&:not(.nobackground):before{background:url(../../incl/cuhk-logo.png) no-repeat;width:150px;height:27px;padding:0}
+		
+		&>hgroup+article{margin-top:30px}
+		&.backdrop{background:#FFF}
+
+		&>article.subsection h2{margin-top:42%}
+		&>article.nobackground img{max-width:100%;max-height:97%;margin:-4% 5%}
+		q{display:block;line-height:150%;margin:6%}
+	}
+}
