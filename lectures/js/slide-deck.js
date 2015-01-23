@@ -239,10 +239,7 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
       // adon
       // print
       if (e.metaKey) {
-        this.nextSlide = function(){};
-        this.prevSlide = function(){};
         document.body.classList.add('print');
-        document.body.style.overflow = 'visible';
         document.body.style.background = 'none';
       }
       break;
