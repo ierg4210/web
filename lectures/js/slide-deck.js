@@ -235,6 +235,16 @@ SlideDeck.prototype.onBodyKeyDown_ = function(e) {
       } else if (this.controller && !this.controller.popup) {
         document.body.classList.toggle('with-notes');
       }
+
+      // adon
+      // print
+      if (e.metaKey) {
+        this.nextSlide = function(){};
+        this.prevSlide = function(){};
+        document.body.classList.add('print');
+        document.body.style.overflow = 'visible';
+        document.body.style.background = 'none';
+      }
       break;
 
     case 82: // R
