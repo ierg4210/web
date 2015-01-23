@@ -183,6 +183,11 @@ footer {
   bottom:0;
 }
 
+.syllabus li {
+  margin:15px 0;
+}
+
+
 @media print, screen and (max-width: 960px) {
   
   div.wrapper {
@@ -239,10 +244,6 @@ footer {
 @media print, screen and (max-width: 480px) {
   body {
     padding:15px;
-  }
-  
-  header ul {
-    display:none;
   }
 }
 
