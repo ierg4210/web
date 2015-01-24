@@ -1,2 +1,5 @@
+*.docx
+*.pptx
+*.xlsx
 *.sublime-workspace
 lectures/.sass*
