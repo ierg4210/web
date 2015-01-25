@@ -1,0 +1,970 @@
+﻿<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTTP and Client-side Form Handling | IERG4210 Web Programming and Security</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <meta name="viewport" content="initial-scale=0.8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <hgroup class="auto-fadein">
+      <h1 data-config-title>HTTP and Client-side <br/>Form Handling</h1>
+      <h2 data-config-subtitle>IERG4210 Lecture 4</h2>
+      <p data-config-presenter>Dr. Adonis Fung <br/> Information Engineering, CUHK <br/> Paranoids, Yahoo!<br/><br/>IERG4210 Web Programming and Security, 2015 Spring. <br/>Offered by Dept. of Information Engineering, The Chinese University of Hong Kong. <br/><br/>Copyright. Dr. Adonis Fung</p>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Agenda</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li><span class="orange">HTTP</span>
+				<ul class="smaller">
+					<li>Introduction & Client-Server Model</li>
+					<li>HTTP Request and Response</li>
+				</ul>
+			</li>
+			<li><span class="green">HTML Forms and Input Controls</span></li>
+			<li><span class="blue">Client-side Restrictions</span>
+				<ul class="smaller">
+					<li>HTML: The use of form elements</li>
+					<li>HTML: HTML5 Validations</li>
+					<li>JS: Javascript Validations</li>
+				</ul>
+			</li>
+			<li><span class="purple">Form Submission Approaches</span>
+				<ul class="smaller">
+					<li>Traditional Form Submission</li>
+					<li>Programmatic Form Submission</li>
+					<li>AJAX Form Submission </li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+
+<slide>
+    <hgroup>
+      <h2>Introduction to HTTP</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>Defintion: HTTP is a text-based application-layer protocol that defines how content is requested from a client application and served by a web server.
+				<ul>
+					<li>Work on top of TCP/IP</li>
+					<li>Latest standard is HTTP/1.1, defined in <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>. (<a href="https://en.wikipedia.org/wiki/HTTP/2">HTTP/2 drafting</a>)</li>
+					<li>Specifications of HTTP Request and Response Headers</li>
+				</ul>
+			</li>
+			<li><span class="orange">Client-Server Model</span>
+				<ul>
+					<li>Popular servers: Apache, Nginx, Node.js, IIS, AppEngine, etc</li>
+					<li>Popular clients/agents: Chrome, Firefox, IE, Safari, etc</li>
+					<li>(Demo) Using telnet to make a simple request</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Client-Browser Model</h2>
+  	</hgroup>
+  	<article>
+  		<img src="incl/04-http.png" style="width:80%;margin:0 10%"/>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Surfing the Web using Telnet</h2>
+  	</hgroup>
+  	<article>
+  		<pre style="font-size:65%;line-height:90%">
+$ <b>telnet www.cuhk.edu.hk 80</b>
+Trying 137.189.11.73...
+Connected to www.cuhk.edu.hk.
+Escape character is '^]'.
+<span class="purple"><b>GET / HTTP/1.1
+Host: www.cuhk.edu.hk</b>
+</span>
+<span class="green">HTTP/1.1 200 OK
+Date: Mon, 26 Jan 2015 17:00:28 GMT
+Server: Apache/2.0.52 (Unix) DAV/2 mod_ssl/2.0.52 OpenSSL/0.9.7d PHP/5.0.2
+Content-Location: index.html.en
+Vary: negotiate,accept-language
+TCN: choice
+Last-Modified: Mon, 14 Dec 2009 09:42:15 GMT
+ETag: "10c43b-19d-16a9cbc0;c0440-10a-a080d780"
+Accept-Ranges: bytes
+Content-Length: 413
+Content-Type: text/html
+Content-Language: en
+
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;The Chinese University of Hong Kong&lt;/TITLE&gt;
+&lt;META HTTP-EQUIV=&quot;CACHE-CONTROL&quot; CONTENT=&quot;NO-CACHE&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Pragma&quot; CONTENT=&quot;no-cache&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Expires&quot; CONTENT=&quot;-1&quot;&gt;
+&lt;META HTTP-EQUIV=&quot;Refresh&quot; CONTENT=&quot;0; URL=/english/index.html&quot;&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+Being directed to The Chinese University of Hong Kong home page according to your browser language preference.
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</span>
+</pre>
+  	</article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Typical HTTP Requests</h2>
+    </hgroup>
+    <article>
+		<ul class="build" style="margin-top:10px">
+			<li><span class="blue">GET</span> request:
+				<pre class="lessmargin smaller blue">GET /~ierg4210/lectures/incl/process.php?q=abc HTTP/1.1
+Host: course.ie.cuhk.edu.hk
+
+</pre>
+			</li>
+			<li><span class="green">POST</span> request:
+				<pre class="lessmargin smaller green">POST /~ierg4210/lectures/incl/process.php?q=abc HTTP/1.1
+Host: course.ie.cuhk.edu.hk
+Content-Length: 102
+Content-Type: application/x-www-form-urlencoded
+
+name=Adon&gender=M&email=phfung%40ie.cuhk.edu.hk&address=SHB%2C+CUHK%2C+NT&region=NT&action=updateInfo
+</pre>
+			</li>
+			<li>Specifications:
+				<ul>
+					<li><span class="orange">Request Version:</span> HTTP/1.0, HTTP/1.1</li>
+					<li><span class="orange">Request Method:</span> <span class="blue">GET</span>, <span class="green">POST</span>, PUT, HEAD, DELETE, CONNECT, etc...</li>
+					<li><span class="orange">Request Parameters:</span> <span class="blue">query string</span> v.s. <span class="green">body</span></li>
+					<li><span class="orange">Request Headers:</span> specifying hostname, content-length and content-type</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Typical HTTP Response</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>
+				<pre class="lessmargin">HTTP/1.1 200 OK
+Date: Mon, 26 Jan 2015 17:00:28 GMT
+Content-Length: 413
+Content-Type: text/html
+
+&lt;HTML&gt;...&lt;/HTML&gt;
+</pre>
+			</li>
+			<li>Specifications:
+				<ul>
+					<li><span class="orange">Response Version:</span> HTTP/1.0, HTTP/1.1</li>
+					<li><span class="orange">Response Status:</span> 1xx for Informational, 2xx for Successful, 3xx for Redirection, 4xx for Client Error, and 5xx for Server Error</li>
+					<li><span class="orange">Response Headers:</span> content-length, content-type, and many more for <a href="https://tools.ietf.org/html/rfc2617">authentication</a>, cookies, security, caching, redirection, etc...</li>
+					<li><span class="orange">Response Body:</span> the content</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>HTML Forms</h2>
+	</hgroup>
+	<article>
+		<ul class="build lessmargin">
+			<li>The most prevalent approach <span class="orange">to solicit information from users</span></li>
+			<li>Technically, a &lt;form&gt; tag that comprises different form controls including &lt;input&gt;, &lt;textarea&gt;, and &lt;select&gt;</li>
+			<li>A typical  example that asks for user's  information:
+				<section class="demoHTML lessmargin">
+					<pre class="prettyprint smaller" data-lang="html">&lt;fieldset&gt;
+  &lt;legend&gt;Personal Information&lt;/legend&gt;
+  &lt;form method=&quot;POST&quot; action=&quot;https://course.ie.cuhk.edu.hk/~ierg4210/lectures/incl/process.php?q=abc&quot;&gt;&lt;ul&gt;
+    &lt;li&gt;
+      &lt;label&gt;Name*&lt;/label&gt;
+      &lt;div&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot; required /&gt;&lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;label&gt;Gender*&lt;/label&gt;
+      &lt;div&gt;&lt;input required type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;M&quot; /&gt; M &lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;F&quot; /&gt; F&lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;label&gt;Email*&lt;/label&gt;
+      &lt;div&gt;&lt;input type=&quot;email&quot; name=&quot;email&quot; required placeholder=&quot;john@example.com&quot; /&gt;&lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;label&gt;Address*&lt;/label&gt;
+      &lt;div&gt;&lt;textarea name=&quot;address&quot; required&gt;&lt;/textarea&gt;&lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;label&gt;Region*&lt;/label&gt;
+      &lt;div&gt;&lt;select required name=&quot;region&quot;&gt;&lt;option/&gt;&lt;option value=&quot;HK&quot;&gt;HK&lt;/option&gt;&lt;option value=&quot;KL&quot;&gt;KL&lt;/option&gt;&lt;option value=&quot;NT&quot;&gt;NT&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;updateInfo&quot; /&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Send&quot; /&gt;&lt;span&gt; * denotes a required field.&lt;/span&gt;
+  &lt;/form&gt;
+&lt;/fieldset&gt;</pre>
+				</section>
+			</li>
+		</ul>
+		<div class="fitPageWidth"></div>
+	</article>
+  </slide>
+  <slide>
+	<hgroup>
+	  <h2><code>&lt;form&gt;</code> Attributes</h2>
+	</hgroup>
+	<article>
+		<ul class="build">
+			<li><pre class="prettyprint lessmargin" data-lang="html">&lt;form method=&quot;POST&quot; action=&quot;/~ierg4210/lectures/incl/process.php?q=abc&quot;&gt;
+&lt;!-- include some input controls here --&gt;
+&lt;/form&gt;</pre></li>
+			<li><code class="orange">method=&quot;POST&quot;</code> or <code class="orange">method=&quot;GET&quot;</code>
+				(default: GET)	
+				<ul>
+					<li class="smaller"><span class="pink">POST</span> is mainly  used to <span class="pink">make changes on server</span> data, while <br/>
+						<span class="pink">GET</span> is used to  <span class="pink">retrieve data</span> only</li>
+				</ul>
+			</li>
+			<li><code class="orange">action=&quot;/~ierg4210/lectures/incl/process.php?q=abc&quot;</code> (default: the current URL)
+				<ul>
+					<li class="smaller">the value takes a URL that will accept the form request</li>
+				</ul>
+			</li>
+			<li><code class="orange">onsubmit=&quot;return false&quot;</code> is optional
+				<ul class="smaller">
+					<li>Often used when the form is submitted over AJAX, to be discussed in later slides</li>
+					<li>Avoid it due to inline script restriction by <a href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP">CSP</a></li>
+				</ul>
+			</li>
+			<li><code class="orange">enctype="multipart/form-data"</code> is optional
+				<ul>
+					<li class="smaller">When <code>&lt;input type=&quot;file&quot;/&gt;</code> is used for file upload</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Controls (1/4)</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>A typical form control is defined as follows:
+				<section class="demoHTML demo1HTML">
+					<pre class="prettyprint smaller lessmargin" data-lang="html">&lt;!-- &lt;label&gt; is to focus on a field when clicked --&gt;
+&lt;label for=&quot;field1&quot;&gt;Field 1: &lt;/label&gt;
+&lt;input type=&quot;text&quot; name=&quot;param1&quot; id=&quot;field1&quot; /&gt;
+</pre></section>
+			</li>
+			<li class="fitPageWidth">Most Common Controls:
+				<ul class="build smaller">
+					<li class="fitPageWidth">Text field<section class="demoHTML demo0HTML"><pre class="prettyprint smaller" data-lang="html">First Name: &lt;input type=&quot;text&quot; name=&quot;firstname&quot; /&gt;</pre></section></li>
+					<li class="fitPageWidth">Password field (MUST use POST method)
+						<section class="demoHTML demo1HTML">
+							<pre class="prettyprint smaller" data-lang="html">Password: &lt;input type=&quot;password&quot; name=&quot;name&quot; value=&quot;abc&quot; /&gt;</pre></section></li>
+					<li class="fitPageWidth">Hidden Field
+						<section class="demoHTML demo0HTML">
+							<pre class="prettyprint smaller" data-lang="html">Hidden? &lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;updateData&quot; /&gt;
+</pre>
+						</section>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Controls (2/4)</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>Controls that offer <span class="orange">choices</span>:
+<ul class="build smaller">
+					<li class="fitPageWidth">Radio box
+					(limit to a single choice for a group of radios of the same name)
+						<section class="demoHTML demo1HTML">
+						<pre class="prettyprint smaller" data-lang="html">&lt;input type=&quot;radio&quot; name=&quot;sex&quot; value=&quot;M&quot; checked/&gt; M 
+&lt;input type=&quot;radio&quot; name=&quot;sex&quot; value=&quot;F&quot; /&gt; F</pre></section></li>
+					<li class="fitPageWidth">Checkboxes
+						(multiple choices)
+						<section class="demoHTML demo2HTML">
+							<pre class="prettyprint smaller" data-lang="html">&lt;input type=&quot;checkbox&quot; name=&quot;item[]&quot; value=&quot;A&quot;
+       checked /&gt; A 
+&lt;input type=&quot;checkbox&quot; name=&quot;item[]&quot; value=&quot;B&quot; /&gt; B</pre>
+						</section>
+						<em>Note: the empty brackets [] are needed for PHP to receive the choices as an array</em>
+					</li>
+					<li class="fitPageWidth">Dropdown menu (single choice now; try adding a attribute <code>multiple</code>)
+						<section class="demoHTML demo2HTML">
+					<pre class="prettyprint smaller" data-lang="html" style="height:30%">Which OS do you like: 
+&lt;select name=&quot;OS&quot;&gt;
+  &lt;option value=&quot;1&quot;&gt;iOS&lt;/option&gt;
+  &lt;option value=&quot;2&quot; selected=&quot;true&quot;&gt;Android&lt;/option&gt;
+&lt;/select&gt;</pre></section></li>
+				</ul>
+			</li>
+		</ul>
+		<div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Controls (3/4)</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>Even More Controls:
+				<ul class="build smaller">
+					<li class="fitPageWidth">Textarea (Multi-line text field)
+						<section class="demoHTML demo2HTML">
+							<pre class="prettyprint smaller" data-lang="html">Description: 
+&lt;textarea name=&quot;desc&quot;&gt;IERG4210&lt;/textarea&gt;</pre></section></li>
+					<li class="fitPageWidth">File Field
+						<section class="demoHTML demo2HTML">
+							<pre class="prettyprint smaller" data-lang="html">Photos: &lt;input type=&quot;file&quot; name=&quot;pics&quot; /&gt;
+</pre>
+						</section>
+					</li>
+					<li class="fitPageWidth">Submit Button
+						<section class="demoHTML demo0HTML">
+							<pre class="prettyprint smaller" data-lang="html">&lt;input type=&quot;submit&quot; value=&quot;Go&quot; /&gt;
+</pre>
+						</section>
+					</li>
+					<li class="fitPageWidth">Image Submit Button (Image Credit: HSBC)
+						<section class="demoHTML demo1HTML">
+							<pre class="prettyprint smaller" data-lang="html">&lt;input type=&quot;image&quot; src=&quot;incl/04-go.gif&quot; /&gt;
+</pre>
+						</section>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Controls (4/4)</h2>
+    </hgroup>
+    <article>
+		<ul class="build lessmargin">
+			<li><div class="orange">HTML 5 New Controls</div>
+				<ul class="build smaller">
+		<li class="fitPageWidth">Email Field
+			<section class="demoHTML demo1HTML">
+				<pre class="prettyprint smaller" data-lang="html">&lt;form&gt;Email:* 
+      &lt;input type=&quot;email&quot; name=&quot;email&quot; required /&gt;&lt;/form&gt;</pre>
+				</section>
+			</li>
+		<li class="fitPageWidth">URL Field with optional use of styling by new CSS pseudo selectors
+			<section class="demoHTML demo2HTML">
+				<pre class="prettyprint smaller" data-lang="html">&lt;style&gt;:valid{border:1px solid #0F0} 
+       :invalid{border:1px solid #F00}&lt;/style&gt;
+&lt;form&gt;URL: &lt;input type=&quot;URL&quot; name=&quot;url&quot; /&gt;&lt;/form&gt;</pre>
+				</section>
+			</li>
+		<li class="fitPageWidth">Search Field
+			<section class="demoHTML demo1HTML">
+				<pre class="prettyprint smaller" data-lang="html">&lt;form&gt;&lt;input type=&quot;search&quot; name=&quot;q&quot; 
+             placeholder=&quot;Search...&quot; /&gt;&lt;/form&gt;</pre>
+				</section>
+			</li>
+		<li class="fitPageWidth">Custom Pattern Field with regular expressions
+			<section class="demoHTML demo1HTML">
+	<pre class="prettyprint smaller" data-lang="html">&lt;form&gt;Amount: $&lt;input type=&quot;text&quot; name=&quot;amount&quot; pattern=&quot;^[\d,.]+$&quot; /&gt;&lt;/form&gt;</pre>
+</section>
+			</li>
+	</ul>
+			</li>
+			<li class="fitPageWidth">In a nutshell, HTML5 Forms introduced
+				<ul class="smaller">
+					<li>More  specific-purpose textfields; Built-in support of <span class="orange">client-side validations</span></li>
+					<li>New CSS Pseudo Selectors: <code>:valid</code>, <code>:invalid</code>, <code>:required</code> and <code>:optional</code></li>
+				</ul>
+			</li>
+		</ul>
+		<div class="fitPageWidth"></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Regular Expressions</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li class="yellow">A language to recognize string patterns</li>
+			<li>
+				Always refer to the <a href="http://www.addedbytes.com/cheat-sheets/download/regular-expressions-cheat-sheet-v1.png">Cheatsheet</a>
+				<ul class="smaller">What you must know: 
+					<li><span class="red">^</span> - start of string; <span class="red">$</span> - end of string (IMPORTANT to validations!)</li>
+					<li><span class="red">+</span> - one or more times; <span class="red">?</span> - 0 or 1 times; <span class="red">*</span> - 0 or more times</li>
+				</ul>
+			</li>
+			<li><span class="green">Examples:</span>
+				<ul class="build">
+					<li>Float (<span class="red">\d</span> includes digits only): <pre class="prettyprint smaller lessmargin" data-lang="regex">^[\d\.]+$</pre></li>
+					<li>Alphanumeric (<span class="red">\w</span> includes letters, digits, underscore): <pre class="prettyprint smaller lessmargin" data-lang="regex">^[\w\-, ]+$</pre></li>
+					<li>Email: <pre class="prettyprint smaller lessmargin" data-lang="regex">^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$</pre>
+					<p class="smaller">The regular expression for email address is readily available on Web. <span class="red"><br/>
+						IMPORTANT: Consult creditable websites for reusable patterns!!</span></p></li>
+				</ul>
+			</li>
+		</ul>
+	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  	  <h2>HTML5 Forms: Browser Support (1/1)</h2>
+  	</hgroup>
+    <article class="nobackground">
+		<iframe src="http://caniuse.com/#feat=forms"></iframe>
+		<div class="source"><a href="http://caniuse.com/#feat=forms">http://caniuse.com/#feat=forms</a></div>
+    </article>
+  </slide>
+  <slide>
+  	<hgroup>
+  	  <h2>HTML5 Forms: Browser Support (2/2)</h2>
+  	</hgroup>
+  	<article class="nobackground">
+		<iframe src="http://www.wufoo.com/html5/"></iframe>
+		<div class="source"><a href="http://wufoo.com/html5/">http://www.wufoo.com/html5/</a></div>
+	</article>
+  </slide>
+  <slide>
+	<article class="subsection">
+		<h2>Client-side Restrictions</h2>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Client-side Restrictions</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li><span class="orange">To inform the users early on for input errors</span>
+				<ul class="build">
+					<li>To create a more interactive and responsive UI experience</li>
+					<li> Otherwise, input errors are prompted only after form submissions (round-trip delay)</li>
+				</ul>
+			</li>
+			<li><span class="orange">To imply a specific pattern that a user is expected to follow</span>
+				<ul class="build">
+					<li>To help users enter/choose the valid data that we need</li>
+					<li><span class="red">IMPORTANT: They can be bypassed by Parameter Tampering Attacks!! Don't count on them for security!!</span> <br/><span class="smaller">Reason: A user has full control of any client-side code downloaded to his browser using the lovely <span class="green">Firebug :)</span></span></li>
+				</ul>
+			</li>
+			<li>Hence, you need input validations implemented on <span class="orange">BOTH</span>
+				<ul>
+					<li><span class="red"><em>server-side</em> for security enforcement</span>, and </li>
+					<li><em>client-side</em> for better user experience.</li>
+				</ul>
+			</li>
+		</ul>
+		<div class="source">Reading: Extracted pages for FAITH</div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>3 Approaches of Client-side Restrictions</h2>
+    </hgroup>
+    <article>
+		<ol class="build">
+			<li><span class="orange">The use of different form controls</span> (shown in previous slide)
+				<ul>
+					<li>e.g. Radioboxes for genders implies either M or F</li>
+					<li>e.g. Dropdown menu implies a restriction on some default choices</li>
+				</ul>
+			</li>
+			<li><span class="orange">Validations with HTML5</span> (shown in previous slide)
+				<ul>
+					<li>The first built-in support of client-side validations by IE 10+, Firefox 4+, Chrome, etc</li>
+					<li>e.g. Email, URL, Search, and Custom fields</li>
+</ul>
+			</li>
+			<li><span class="orange">Validations with Javascript</span> (to be discussed in next slide)
+				<ul>
+					<li>The programmatic way to customize input patterns</li>
+					<li>Well-supported across browsers</li>
+</ul>
+			</li>
+		</ol>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Validations with Javascript (1/4)</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li>Recall the best practice: <span class="red">Graceful Degradation</span>
+				(<a href="02-lecture-UserInterfaceDesign.html#5">p.5 in Lect 2</a>)
+				<ul class="smaller lessmargin">
+					<li>if (HTML5 supported) use the native HTML5 Validation</li>
+					<li>else if (JS supported) use the JS validation code</li>
+					<li>else the form still works without any validations</li>
+				</ul>
+			</li>
+			<li><span class="purple">HTML5 Mode:</span>
+				<iframe src="incl/04-loginForm.html" style="height:100px"></iframe>
+				<p class="smaller">Note: POST Parameters can be accessed only by server but not JS. Hence, nothing is shown here after submission. Firebug can show what was already sent.</p>
+</li>
+			<li><span class="orange">Legacy Mode:</span>
+				<iframe src="incl/04-loginForm-NoValidate.html" style="height:120px"></iframe>
+				<p class="smaller">Note: Need some free <a href="http://www.microsoft.com/download/en/details.aspx?id=11575">old-school IE browsers</a>/<a href="https://saucelabs.com/features">saucelabs</a> for compatibility tests!?</p>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Validations with Javascript (2/4)</h2>
+    </hgroup>
+    <article>
+		<p class="yellow">The implementation: </p>
+		<ul class="smaller build lessmargin">
+			<li>1. Given a form that has a HTML5 Email field,
+				<pre class="prettyprint lessmargin smaller" data-lang="html">&lt;form id=&quot;loginForm&quot; method=&quot;POST&quot;&gt;
+  Email: &lt;input type=&quot;email&quot; name=&quot;em&quot; /&gt;&lt;br/&gt;
+  Password: &lt;input type=&quot;password&quot; name=&quot;pw&quot; /&gt;&lt;br/&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Login&quot; /&gt;
+&lt;/form&gt;</pre>
+				<p class="smaller">Note: Unsupported type will fallback to an ordinary textfield</p>
+			</li>
+			<li>2. Add the title, HTML5 requried and pattern attributes
+				<pre class="prettyprint lessmargin smaller" data-lang="html">&lt;form id=&quot;loginForm&quot; method=&quot;POST&quot;&gt;
+  Email: &lt;input type=&quot;email&quot; name=&quot;em&quot; title=&quot;valid email&quot; required
+                pattern="^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$" /&gt;&lt;br/&gt;
+  Password: &lt;input type=&quot;password&quot; name=&quot;pw&quot; title=&quot;valid password&quot; required/&gt;&lt;br/&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Login&quot; /&gt;
+&lt;/form&gt;</pre>
+				<p class="smaller">Note: Unsupported attributes will be ignored in legacy browsers</p>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Validations with Javascript (3/4)</h2>
+    </hgroup>
+    <article>
+		<p>3. To validate the form right before form submission:</p>
+		<pre class="prettyprint lessmargin linenums smaller" style="font-size:70%" contenteditable data-lang="html">
+&lt;form id=&quot;loginForm&quot; method=&quot;POST&quot;&gt;...&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+var loginForm = document.getElementById('loginForm');
+// Do this only if the HTML5 Form Validation is absent
+if (!loginForm.checkValidity || loginForm.noValidate)
+  // to listen on the submit event of &quot;loginForm&quot;
+  loginForm.onsubmit = function(){
+    // a private function for displayError
+    function displayErr(el,msg){alert('FieldError: ' + msg);el.focus();return false}
+    // looping over the array of elements contained in the form
+    for (var i = 0, p, el, els = this.elements; el = els[i]; i++) {
+<b>      // validate empty field if required attribute is present
+      if (el.hasAttribute('required') &amp;&amp; el.value == '')
+        return displayErr(el, el.title + ' is required');
+      // validate pattern if pattern attribute is present
+      if ((p = el.getAttribute('pattern')) &amp;&amp; !new RegExp(p).test(el.value))
+        return displayErr(el, 'in' + el.title);</b>
+    }
+  // If false is returned above, the form submission will be canceled;
+  // If false is NOT returned, the form will submit accordingly
+  }
+&lt;/script&gt;</pre>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Validations with Javascript (4/4)</h2>
+    </hgroup>
+    <article>
+		<ul style="margin-top:10px">
+			<li>(Take-home) To also validate <code>radio</code> and <code>checkbox</code>
+				<pre class="prettyprint smaller lessmargin lang-javascript" data-lang="html">
+for (var i = 0, p, el, els = this.elements; el = els[i]; i++) {
+  // validate empty field, radio and checkboxes
+  if (el.hasAttribute('required')) {
+    if (el.type == 'radio') {
+      if (lastEl &amp;&amp; lastEl == el.name) continue;
+      for (var j = 0, chk = false, lastEl = el.name, choices = this[lastEl],
+           choice; choice = choices[j]; j++)
+        if (choice.checked) {chk = true; break;}
+      if (!chk) return displayErr(el, 'choose a ' + el.title);
+      continue;
+    } else if ((el.type == 'checkbox' &amp;&amp; !el.checked) || el.value == '') 
+      return displayErr(el, el.title + ' is required');
+  }
+  if ((p = el.getAttribute('pattern')) &amp;&amp; !new RegExp(p).test(el.value))
+    return displayErr(el, 'in' + el.title);
+}</pre>
+				<p class="smaller"><a href="incl/04-formValidations.html">Code Demo</a>. For your exercise/midterm/final, how to skip disabled/hidden controls??</p></li>
+		</ul>
+	</article>
+  </slide>
+  <slide>
+	<article class="subsection">
+		<h2>Form Submission Approaches</h2>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Form Submission Approaches</h2>
+    </hgroup>
+    <article>
+		<ol class="build">
+			<li><span class="orange">Traditional Form Submission</span>
+				<span class="smaller">(demonstrated in previous slide) </span>
+				<ul class="build smaller">
+					<li>Triggered by a submit button or the Enter key</li>
+					<li>Fires the <code>submit</code> event, where one can register a listener through <code>addEventListener('submit')</code> or <code>onsubmit</code> validate before a form submission</li>
+				</ul>
+			</li>
+			<li><span class="orange">Programmatic Form Submission</span>
+				<ul class="build smaller">
+					<li>Recommended to <span class="red">use this only when submiting a form automatically</span>
+						<pre class="prettyprint smaller lessmargin" data-lang="html">&lt;form method="POST" id=&quot;buildAutoPostReq&quot;&gt;&lt;!-- Some hidden fields here --&gt;&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;document.forms[0].submit();&lt;/script&gt;</pre></li>
+					<li>Unfortunately,  programmers (incl. HSBC) who don't know <code class="green">&lt;input type=&quot;image&quot;&gt;</code> like to do this for images: When an image is clicked, <code>Form.submit()</code> will be finally called if a form is properly validated</li>
+					<li><span class="red">Notice:</span> NO <code>submit</code> event is fired.</li>
+				</ul>
+			</li>
+			<li><span class="orange">AJAX Form Submission</span> <span class="smaller">(implementation to be detailed next week)</span> 
+				<ul class="smaller">
+					<li>Asynchronous Javascript and XML</em></li>
+					<li>In terms of implementation, it's ultimately the <code>XMLHttpRequest</code> API, but better wrap it with a library :)</li>
+					<li>The concept on async is much more important</li>
+				</ul>
+			</li>
+		</ol>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Synchronous Workflow</h2>
+    </hgroup>
+    <article>
+		<div class="build lessmargin">
+			<img src="incl/04-Resig07-sync.png" style="width:80%;margin:-10px 10%" />
+			<p>Synchronous calls are <span class="red">blocking</span>. It hangs until the server returns, and could also block later requests, i.e. less efficient</p>
+		</ul>
+		<div class="source">Image Source: John Resig, Pro Javascript Techniques, p.26, 2007</div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Asynchronous Workflow</h2>
+    </hgroup>
+    <article>
+		<div class="build">
+			<h4 class="purple">Principle: Do something else while waiting</h4><br/>
+			<p>Dispatch many requests at a time. Do something else. Get notified when server returns, then render the results. The responses will likely be out of order.</p>
+			<div>
+				<iframe src="https://www.ibm.com/developerworks/websphere/library/techarticles/0611_lucas/images/fig1.jpg" style="width:550px;height:340px"></iframe>
+				<iframe src="https://www.youtube.com/embed/cBVoNJ_IGV0?rel=0&showinfo=0&t=1m38s" frameborder="0" allowfullscreen style="width:400px;height:340px"></iframe>
+			</div>
+		</div>
+		<div class="source">Image Source: https://www.ibm.com/developerworks/websphere/library/techarticles/0611_lucas/images/fig1.jpg <br/>Video Source: https://www.youtube.com/embed/cBVoNJ_IGV0 (start watching at 1m38s)</div>
+	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+      <h2>AJAX usage</h2>
+    </hgroup>
+    <article>to be continued next week</article>
+  </slide>
+  <!--slide>
+    <hgroup>
+      <h2>Introduction to AJAX</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li><span class="green">Demonstration: </span>
+				<iframe src="https://secure.ie.cuhk.edu.hk/~fph008/phfung/ierg4210/2012fall/incl/04-ajaxForm.html" style="height:210px"></iframe></li>
+			<li>Advantages:
+				<ul class="build">
+					<li><span class="orange">Modern user experience</span>
+						<ul class="smaller">
+							<li> Eliminate page-load effect, i.e. no blank screen</li>
+						</ul>
+					</li>
+					<li><span class="orange">Using the well-known <code class="green">XMLHttpRequest</code> API</span>
+						<ul class="smaller">
+							<li>Sends requests at background; not limited to only send form data :)</li>
+						</ul>
+					</li>
+					<li><span class="orange">Cancel the default form submissions</span>
+						<ul class="smaller">
+							<li>returns <code>false</code> in the <code>submit</code> event</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+	<hgroup>
+		<h2>AJAX: Simplest Implementation</code></h2>
+	</hgroup>
+	<article>
+		<div class="build">
+			<pre class="prettyprint lessmargin smaller linenums" data-lang="js">
+var xhr = (window.XMLHttpRequest) 
+		? new XMLHttpRequest()                     // IE7+, Firefox1+, Chrome1+, etc
+		: new ActiveXObject("Microsoft.XMLHTTP"),  // IE 6
+	async = true;
+
+// open the connection
+xhr.open('GET', 'grab-some.html', async);
+
+// register a callback function to listen on readystatechange
+xhr.onreadystatechange = function(){
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        // copy the response to an element called el
+        el.innerHTML = xhr.responseText;
+    }
+};
+
+// send the request
+xhr.send(null);
+</pre>
+		</div>
+		<div class="source">Ref: <a href="https://developer.mozilla.org/en/AJAX/Getting_Started">https://developer.mozilla.org/en/AJAX/Getting_Started</a></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>AJAX: Advanced Implementation</h2>
+    </hgroup>
+    <article>
+		<div class="build">
+			<pre class="prettyprint lessmargin smaller" data-lang="js">
+// e.g to call, myLib.ajax({url:'process.php?q=hello',success:function(m){alert(m)}});
+  myLib.ajax = function(opt) { opt = opt || {};
+    var xhr = (window.XMLHttpRequest) 
+            ? new XMLHttpRequest()                     // IE7+, Firefox1+, Chrome1+, etc
+            : new ActiveXObject("Microsoft.XMLHTTP"),  // IE 6
+        async = opt.async !== false,
+        success = opt.success || null, error = opt.error || function(){/*displayErr()*/};
+    // pass three parameters, otherwise the default ones, to xhr.open()
+    xhr.open(opt.method || 'GET', opt.url || '', async);
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  };</pre>
+  
+  <pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-375px;box-shadow:none;border:0">
+    if (opt.method == 'POST') 
+      xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  </pre>
+  <pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-315px;box-shadow:none;border:0;background:#FFB">
+    // Asyhronous Call requires a callback function listening on readystatechange
+    if (async)
+      xhr.onreadystatechange = function(){
+
+	  
+	  
+	  
+	  
+	  
+	  
+      };
+    xhr.onerror = function(){error.call(xhr)};
+    // POST parameters encoded as opt.data is passed here to xhr.send()
+    xhr.send(opt.data || null);
+    // Synchronous Call blocks UI and returns result immediately after xhr.send()
+    !async &amp;&amp; success &amp;&amp; success.call(xhr, xhr.responseText);</pre>
+	<pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-255px;box-shadow:none;border:0;background:#FF6">
+        if (xhr.readyState == 4) {
+		  var status = xhr.status;
+          if ((status &gt;= 200 &amp;&amp; status &lt; 300) || status == 304 || status == 1223)
+            success &amp;&amp; success.call(xhr, xhr.responseText);
+          else if (status &lt; 200 || status &gt;= 400)
+            error.call(xhr);
+        }</pre>
+		</div>
+		<div class="source">Ref: <a href="https://developer.mozilla.org/en/AJAX/Getting_Started">https://developer.mozilla.org/en/AJAX/Getting_Started</a></div>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>AJAX Form Submission (1/2)</h2>
+    </hgroup>
+    <article>
+		<ul class="build lessmargin">
+			<li class="orange">More on how to submit a form over the last AJAX function:</li>
+			<li>1. To build request parameters based on input controls (ref: <a href="?#5">p.5</a>)
+<pre class="prettyprint lessmargin smaller" data-lang="js">
+// Example call: param = new myLib.formData(document.getElementById('form1')).toString()
+// i.e. to be used at <code>xhr.send(param)</code> (POST) or <code>xhr.open('GET', url+'?'+param, true)</code> (GET)
+myLib.formData = function(form) {
+  // a private array for storing all parameters
+  this.data = [];
+  for (var i = 0, j = 0, name, el, els = form.elements; el = els[i]; i++) {
+    // skip those useless elements
+    if (el.disabled || el.name == '' 
+         || ((el.type == 'radio' || el.type == 'checkbox') &amp;&amp; !el.checked))
+      continue;
+    // add those useful to the data array
+    this.append(el.name, el.value);
+  }
+};
+// public methods of myLib.formData
+myLib.formData.prototype = {
+  // output the required final POST parameters, e.g. a=1&amp;b=2&amp;c=3
+  toString: function(){
+    return this.data.join('&amp;');
+  },
+  // encode the data with the built-in function encodeURIComponent
+  append: function(key, val){
+    this.data.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+  }
+};</pre>
+			</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>AJAX Form Submission (2/2)</h2>
+    </hgroup>
+    <article>
+		<ul class="build lessmargin">
+			<li>2. To build a function to submit over AJAX
+				<pre class="prettyprint lessmargin smaller" data-lang="js">
+myLib.submit = function(form, successCallback) {
+  // Given in page 17, myLib.validate() returns whether the form is validated
+  // Hence, submit the form over AJAX only if it is properly validated
+  myLib.validate(form) && myLib.ajax({
+    method: 'POST',
+    url: form.getAttribute('action') || 'admin-process.php',
+    data: new formData(form).toString(),
+    success: successCallback
+  });
+  return false;
+};</pre></li>
+  			<li>3. To make an AJAX form, register a submit event listener to it
+				<pre class="prettyprint lessmargin smaller" data-lang="js">
+  document.getElementById('loginForm').onsubmit = function(){
+    // false is always returned to cancel the default submission
+    return myLib.submit(this, function(serverResponse){
+		alert('OK!' + serverResponse);
+    });
+  }</pre>
+				<span class="smaller">With step 1 & 2 provided, step 3 is what most used in your assignment. <span class="green">Easy? :)</span></span></li>
+		</ul>
+    </article>
+  </slide-->
+  <slide>
+    <hgroup>
+      <h2>XMLHttpRequest</h2>
+    </hgroup>
+    <article>
+		<a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest"><img src="incl/04-mdn-UsingXmlhttprequest.png" style="border:0;margin:-5px 12%" /></a>
+		<div class="source">Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest">https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest</a></div>
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Some Logistics...</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Interactive Workshop next week</span>
+          <ul>
+            <li>Will spare 30-45min for environment setup and coding</li>
+            <li>Some demos, then teaching teams walking around to help</li>
+            <li>Come with your laptop (sufficiently charged)</li>
+            <li>Hint: setting up <a href="https://nodejs.org/">Node.js</a></li>
+          </ul>
+        </li>
+        <li>Credit Card needed for AWS registrations. Follow Tutorial 3.</li>
+      </ul>
+    </article>
+  </slide>  
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-23136362-2', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

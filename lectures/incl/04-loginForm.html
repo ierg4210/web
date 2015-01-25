@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>IERG4210 LoginForm Demo!</title>
+    <style>
+    form ul{list-style:none}
+    form li{clear:left}
+    form ul>input{clear:left;float:left;margin:3px 100px;}
+    form li>label{display:block;}
+    form li>input{float:left;margin:-20px 0 5px 100px}
+    </style>
+  </head>
+
+  <body>
+    <script type="text/javascript">location.search && document.write(location.search.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));</script>
+
+<form id="loginForm" method="POST">
+  <ul>
+    <li>
+	  <label>Email: </label>
+	  <input type="email" name="em" title="valid email" required
+	      pattern="^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$" />
+	</li>
+	<li>
+	  <label>Password: </label>
+	  <input type="password" name="pw" 
+	      title="valid password" required/>
+	</li>
+  <input type="submit" value="Login" />
+</form>
+
+<script type="text/javascript">
+(function(){
+	var loginForm = document.getElementById('loginForm');
+	// Do this only if the HTML5 Form Validation is absent
+	if (!loginForm.checkValidity || loginForm.noValidate) {
+	  // to listen on the submit event of "loginForm"
+	  loginForm.onsubmit = function(){
+		// a private function for displayError
+		function displayErr(el, msg){
+			alert('FieldError: ' + msg);
+			el.focus();
+			return false
+		};
+		// looping over the array of elements contained in the form
+		for (var i = 0, p, el, els = this.elements; el = els[i]; i++) {
+		  // validate empty field if required attribute is present
+		  if (el.hasAttribute('required') && el.value == '')
+			return displayErr(el, el.title + ' is required');
+		  // validate pattern if pattern attribute is present
+		  if ((p = el.getAttribute('pattern')) && !new RegExp(p).test(el.value))
+			return displayErr(el, 'in' + el.title);
+		}
+		// If false is returned above, the form submission will be canceled;
+		// If false is NOT returned, the form will submit accordingly
+	  }
+	}
+})();
+</script>
+
+  </body>
+</html>

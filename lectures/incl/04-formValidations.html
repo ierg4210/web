@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>IERG4210 LoginForm Demo!</title>
+</head>
+<body>
+<script type="text/javascript">location.search && document.write(location.search.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));</script>
+
+<h2>HTML5 Validations</h2>
+<form id="loginForm1" method="POST" >
+	Email:
+	<input type="email" name="em" title="valid email" required="true"
+      pattern="^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$" />
+	<br/>
+	Password:
+	<input type="password" name="pw" 
+      title="valid password" required="true"/>
+	<br/>
+	Sex:
+	<input type="radio" name="sex" 
+      title="sex" required="true" value="M" /> M
+	<input type="radio" name="sex" 
+      title="sex" value="F" /> F
+	<br/>
+	Sex2:
+	<input type="checkbox" name="sex2" 
+      title="sex2" required="true" value="M" /> M
+	<input type="checkbox" name="sex2" 
+      title="sex2" value="F" /> F
+	<br>
+	OS: <select name="os" title="OS" required="true"><option/><option value="1">iOS</option><option value="2">Android</option></select>
+	<br/>
+	Desc: <textarea name="desc" title="Description" required="true"></textarea>
+	<br/>
+	<input type="submit" value="Login" />
+</form>
+
+<h2>JS Validations</h2>
+<form id="loginForm2" method="POST" novalidate="true">
+	Email:
+	<input type="email" name="em" title="valid email" required="true"
+      pattern="^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$" />
+	<br/>
+	Password:
+	<input type="password" name="pw" 
+      title="valid password" required="true"/>
+	<br/>
+	Sex:
+	<input type="radio" name="sex" 
+      title="sex" required="true" value="M" /> M
+	<input type="radio" name="sex" 
+      title="sex" value="F" /> F
+	<br/>
+	Sex2:
+	<input type="checkbox" name="sex2" 
+      title="sex2" required="true" value="M" /> M
+	<input type="checkbox" name="sex2" 
+      title="sex2" value="F" /> F
+	<br>
+	OS: <select name="os" title="OS" required="true"><option/><option value="1">iOS</option><option value="2">Android</option></select>
+	<br/>
+	Desc: <textarea name="desc" title="Description" required="true"></textarea>
+	<br/>
+	<input type="submit" value="Login" />
+	using <code>&lt;form novalidate=&quot;true&quot;&gt;</code>
+</form>
+<script type="text/javascript">
+(function(){
+	var loginForm = document.getElementById('loginForm2');
+	// Do this only if the HTML5 Form Validation is absent
+	if (!loginForm.checkValidity || loginForm.noValidate) {
+	  // to listen on the submit event of "loginForm"
+	  loginForm.onsubmit = function(){
+		// a private function for displayError
+		function displayErr(el, msg){
+			alert('FieldError: ' + msg);
+			el.focus();
+			return false
+		};
+		// looping over the array of elements contained in the form
+		for (var i = 0, p, el, els = this.elements; el = els[i]; i++) {
+		  // validate empty field if required attribute is present
+		  if (el.hasAttribute('required')) {
+			if (el.type == 'radio') {
+				if (last && last == el.name) continue;
+				for (var j = 0, checked = false, last = el.name, choices = this[last], choice; 
+					choice = choices[j]; 
+					j++)
+					if (choice.checked) {
+						checked = true;
+						break;
+					}
+				if (!checked)
+					return displayErr(el, 'choose a ' + el.title);
+				continue;
+		    } else if ((el.type == 'checkbox' && !el.checked) || el.value == '') 
+				return displayErr(el, el.title + ' is required');
+		  }
+		  // validate pattern if pattern attribute is present
+		  if ((p = el.getAttribute('pattern')) && !new RegExp(p).test(el.value))
+			return displayErr(el, 'in' + el.title);
+		}
+		// If false is returned above, the form submission will be canceled;
+		// If false is NOT returned, the form will submit accordingly
+	  }
+	}
+})();
+</script>
+</body>
+</html>
