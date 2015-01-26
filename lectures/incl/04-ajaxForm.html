@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>IERG4210 AjaxForm Demo!</title>
+  </head>
+
+  <body>
+
+<form id="loginForm" method="POST" action="process.php">
+  Email: <input type="email" name="em" title="valid email" required="true"
+      pattern="^[\w=+\-\/][\w=\'+\-\/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$" /><br/>
+  Password: <input type="password" name="pw" 
+      title="valid password" required="true"/><br/>
+  <input type="hidden" name="action" value="login" />
+  <input type="submit" value="Login" />
+  <p>Feedback from Server: </p>
+  <div id="result"></div>
+</form>
+
+<script type="text/javascript" src="myLib.js"></script>
+<script type="text/javascript">
+(function(){
+	// To generate POST parameters based on input controls of a form object
+	var formData = myLib.formData = function(form) {
+		// private variable for storing parameters
+		this.data = [];
+		for (var i = 0, j = 0, name, el, els = form.elements; el = els[i]; i++) {
+			// skip those useless elements
+			if (el.disabled || el.name == '' 
+				|| ((el.type == 'radio' || el.type == 'checkbox') && !el.checked))
+				continue;
+			// add those useful elements to the data array
+			this.append(el.name, el.value);
+		}
+	};
+	// To output the required final POST parameters, e.g. a=1&b=2&c=3
+	formData.prototype.toString = function(){
+		return this.data.join('&');
+	};
+	// To encode the data with the built-in function encodeURIComponent
+	formData.prototype.append = function(key, val){
+		this.data.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+	};
+	
+	
+	
+el('loginForm').onsubmit = function(){
+	// submit the form over AJAX if it is properly validated
+	myLib.validate(this) && myLib.ajax({
+		method: 'POST',
+		url: this.getAttribute('action') || 'admin-process.php',
+		data: new formData(this).toString(),
+		success: function(escapedFeedback){
+			el('result').innerHTML = escapedFeedback;
+		}
+	});
+	// always return false to cancel the default submission
+	return false;
+}
+	
+	
+})();
+</script>
+
+  </body>
+</html>
