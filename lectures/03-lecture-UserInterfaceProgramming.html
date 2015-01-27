@@ -716,7 +716,7 @@ document.querySelector('p').onclick = function(e){
   alert(e.target); // e.target is a reference to the target element
 }</pre>
           <p class="smaller build"><span>Will multiple event listeners in IE get mixed up with the single event object? Why?<br/>
-          </span> <span> &nbsp; No. Because event is non-threaded in nature as said in <a href="#28" onClick="prevSlide();prevSlide()">slide 28</a></span></p>
+          </span> <span> &nbsp; No. Because event is non-threaded in nature as said in <a href="#29" onClick="prevSlide();prevSlide()">slide 29</a></span></p>
           </li>
         <li><span class="orange">W3C Standard</span> (Supported in Firefox, WebKit, IE 9, etc)
           <pre class="prettyprint" data-lang="javascript">el.addEventListener(&quot;click&quot;, function(e) {
@@ -729,36 +729,29 @@ document.querySelector('p').onclick = function(e){
   </slide>
   <slide>
     <hgroup>
-      <h2>Event Listeners - traditional or W3C?</h2>
+      <h2>Event Listeners - Traditional v.s. W3C?</h2>
     </hgroup>
     <article>
-      <div class="build">
-        <p class="orange">Which is preferred, traditional or W3C? Pros and Cons?</p>
-        <ul class="build">
-          <li>Traditional is supported universally, yet risks from being overriden:
-            <div>
-              <pre class="prettyprint smaller">el.onclick = function(e) { /* given that you did something with el */ };
-
+      <ul class="build">
+        <li>Traditional is supported universally, yet risks from being overriden:
+          <pre class="prettyprint">el.onclick = function(e) { /* given that you did something with el */ };
 // BAD colleage can append the following code:
 el.onclick = function(e)  { /* do his things here, which will remove yours */ };
 </pre>
-              <pre class="prettyprint smaller">
-// SMART colleage can do complex things: (Are you a SMART one!?):
-(function(){                                   // Concept of Closure, 02-reading OO JS, p.27-30
+        </li>
+        <li>Unless, everyone is well-behaved:
+          <pre class="prettyprint" contenteditable>
+(function(){                        // Closure, detailed in 02-reading OO JS, p.27-30
   var <b>_onclick = el.onclick</b>;               // _onlick now becomes a local variable
   <b>el.onclick = function(e){</b>
-    // execute your handler first if it exists
-    <b>_onclick && _onclick.call(this, e);</b>  // AND operation: test next operand if exists
-                                              // preserve the this and event object
-    /* can now do his things */
-  }
-})();                                         // execute the annonymous function itself
-</pre>
-            </div>
-            </li>
-          <li>W3C event handlers supports event capturing and cannot be overriden, yet it is not supported by IE non-standard compilant browsers </li>
-        </ul>
-      </div>
+    // execute the existing handler if it exists, propagate the this and event object
+    <b>_onclick && _onclick.call(this, e);</b>   // AND gate: test next operand if exists
+    /* do something else */
+  };
+})();</pre>
+        </li>
+        <li>W3C event handlers supports event capturing and cannot be overriden, yet it is not supported by non-standard compilant browsers like IE </li>
+      </ul>
       <div class="source fitPageWidth">More in the reading - J. Resig, "Pro JavaScript Techniques", p.123, 2007</div>
     </article>  
   </slide>
@@ -776,16 +769,16 @@ el.onclick = function(e)  { /* do his things here, which will remove yours */ };
 &lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
-var clickMe = function(e){
-  e = e || window.event;
-  alert('e.target.id:' + e.target.id
-        + ', this.id:' + this.id);},
- el_p = document.getElementById('el_p'),
- el_a = document.getElementById('el_a');
+function clickMe (e){
+  e = e || window.event;  // for old IE
+  alert('e.target.id:' + e.target.id + '\n'
+      + 'this.id:' + this.id);
+};
 
+var el_p = document.getElementById('el_p'),
+    el_a = document.getElementById('el_a');
 el_p.onclick = clickMe;
 el_a.onclick = clickMe;
-
 // Expected Results:
 //  First alert: e.target.id: el_a, this.id: el_a
 // Second alert: e.target.id: el_a, this.id: el_p
@@ -812,15 +805,16 @@ el_a.onclick = clickMe;
 &lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
-var clickMe = function(e){
-  alert('e.target.id:' + e.target.id
-        + ', this.id:' + this.id);},
- el_p = document.getElementById('el_p'),
- el_a = document.getElementById('el_a');
- 
-el_p.addEventListener(&quot;click&quot;, clickMe, true);
-el_a.addEventListener(&quot;click&quot;, clickMe, true);
+function clickMe (e){
+  e = e || window.event;  // for old IE
+  alert('e.target.id:' + e.target.id + '\n'
+      + 'this.id:' + this.id);
+};
 
+var el_p = document.getElementById('el_p'),
+    el_a = document.getElementById('el_a');
+el_p.addEventListener(&quot;click&quot;, clickMe, <b>true</b>);
+el_a.addEventListener(&quot;click&quot;, clickMe, <b>true</b>);
 // Results:
 //  First alert: e.target.id: el_a, this.id: el_p
 // Second alert: e.target.id: el_a, this.id: el_a
@@ -847,16 +841,16 @@ el_a.addEventListener(&quot;click&quot;, clickMe, true);
 &lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
-var clickMe = function(e){
-  e = e || window.event;
-  e.preventDefault();   // for W3C standard
-  return false;         // for IE 8 or below
- },
- el_p = document.getElementById('el_p'),
- el_a = document.getElementById('el_a');
- 
-el_a.onclick = clickMe;
+function clickMe (e){
+  e = e || window.event;  // for old IE
+  alert('e.target.id:' + e.target.id + '\n'
+      + 'this.id:' + this.id);
+<b>  e.preventDefault();   // for W3C standard
+  return false;         // for IE 8 or below</b>
+};
 
+var el_a = document.getElementById('el_a');
+el_a.onclick = clickMe;
 // Results:
 //   No page navigation when clicked
 &lt;/script&gt;</pre>
@@ -870,7 +864,7 @@ el_a.onclick = clickMe;
   </slide>
   <slide>
     <hgroup>
-      <h2>Stop Propagation: <code>stopPropagation()</code></h2>
+      <h2>Stop Event Propagation: <code>stopPropagation()</code></h2>
     </hgroup>
     <article>
       <div class="build">
@@ -882,15 +876,16 @@ el_a.onclick = clickMe;
 &lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
-var clickMe = function(e){
-  e = e || window.event;
-  alert(this.id);
-  e.stopPropagation();   // for W3C standard
-  e.cancelBubble = true; // for IE 8 or below
- },
- el_p = document.getElementById('el_p'),
- el_a = document.getElementById('el_a');
+function clickMe (e){
+  e = e || window.event;  // for old IE
+  alert('e.target.id:' + e.target.id + '\n'
+      + 'this.id:' + this.id);
+<b>  e.stopPropagation();   // for W3C standard
+  e.cancelBubble = true; // for IE 8 or below</b>
+};
 
+var el_p = document.getElementById('el_p'),
+    el_a = document.getElementById('el_a');
 el_a.onclick = clickMe;  // &lt;a&gt; first as bubbling
 el_p.onclick = clickMe;
 // Result: One alert appears and displays el_a,
@@ -900,7 +895,7 @@ el_p.onclick = clickMe;
         <ul class="fitPageWidth smaller">
           <li class="orange">Event propagation is stopped at <code>el_a</code>, therefore <code>el_p</code> does not receive the event</li>
           <li>Note: The use of <code>&lt;iframe&gt;</code>/<code>&lt;frame&gt;</code> will implicitly block event from propagating</li>
-          <li>Note: We can avoid this even for overlapping clickable elements, if each of which is not an ancestor of the others. (Demo in Facebook Timeline Profile)</li>
+          <li>Note: Can be workarounded not by script. Make overlapping clickable elements using CSS, thus avoiding ancestor relationship. (Demo in Facebook Timeline Profile)</li>
         </ul>
       </div>
     </article>
@@ -910,17 +905,18 @@ el_p.onclick = clickMe;
       <h2>JavaScript Example</h2>
     </hgroup>
     <article>
-      <div class="build">
-        <iframe src="incl/03-calc.html" style="width:180px;height:400px;float:right"></iframe>
-        <ul>
-          <li>The uses of <code>.getElementById()</code> and <code>.getElementsByTagName()</code></li>
-          <li class="orange">Here, 16 event listeners are registered (1 button each), how to reduce to only one?</li>
-            <ul>
-              <li>This was one of the exam questions to assess concept of events</li>
-              <li>Hints: change less than 3 lines of code</li>
-            </ul>
-        </ul>
-      </div>
+      <ul class="build">
+        <li>A calculator using <code>.getElementById()</code> and <br/><code>.getElementsByTagName()</code>
+          <iframe src="incl/03-calc.html" style="width:180px;height:350px;float:right"></iframe>
+        </li>
+        <li class="orange">Here, 16 event listeners are registered (1 button each).</li>
+        <li><span class="green">How to reduce to only one?</span>
+          <ul>
+            <li>This was one of the exam questions to assess concept of event propogations</li>
+            <li>Hints: <a target="_blank" href="incl/03-calc.html">change less than 3 lines of code</a></li>
+          </ul>
+        </li>
+      </ul>
     </article>
   </slide>
   <slide>
