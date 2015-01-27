@@ -921,6 +921,31 @@ el_p.onclick = clickMe;
   </slide>
   <slide>
     <hgroup>
+      <h2>Advanced JavaScript Example</h2>
+    </hgroup>
+    <article>
+      <p>How to fix the problem below? <span class="purple">Closure</span> is your friend!</p>
+      <section class="demoHTML lessmargin">
+        <pre class="prettyprint" data-lang="html">
+&lt;html&gt;&lt;body&gt;
+&lt;script&gt;
+  for (var i = 1; i <= 3; i++) {
+    var btn = document.createElement('input');
+    btn.type = 'button';
+    btn.value = 'button ' + i;
+    // I want to alert the button number
+    btn.onclick = function() {alert(i);};
+    document.body.appendChild(btn);
+  }
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+      </section>
+      <p>Even more advanced: <a href="http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html">Variable Hoisting</a>. Lesson learned is always put <code>var</code> on top. Use <a href="http://www.jslint.com/">jslint</a> to remind yourselves!</p>
+    </article>
+  </slide>
+  <slide>
+    <hgroup>
       <h2>Some Logistics...</h2>
     </hgroup>
     <article>
