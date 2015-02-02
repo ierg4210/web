@@ -90,7 +90,7 @@ URL: https://code.google.com/p/io-2012-slides
   </slide>
   <slide>
   	<hgroup>
-  		<h2>Client-Browser Model</h2>
+  		<h2>Client-Server Model</h2>
   	</hgroup>
   	<article>
   		<img src="incl/04-http.png" style="width:80%;margin:0 10%"/>
@@ -144,8 +144,8 @@ Being directed to The Chinese University of Hong Kong home page according to you
     </hgroup>
     <article>
 		<ul class="build" style="margin-top:10px">
-			<li><span class="blue">GET</span> request:
-				<pre class="lessmargin smaller blue">GET /~ierg4210/lectures/incl/process.php?q=abc HTTP/1.1
+			<li><span class="pink">GET</span> request:
+				<pre class="lessmargin smaller pink">GET /~ierg4210/lectures/incl/process.php?q=abc HTTP/1.1
 Host: course.ie.cuhk.edu.hk
 
 </pre>
@@ -162,8 +162,8 @@ name=Adon&gender=M&email=phfung%40ie.cuhk.edu.hk&address=SHB%2C+CUHK%2C+NT&regio
 			<li>Specifications:
 				<ul>
 					<li><span class="orange">Request Version:</span> HTTP/1.0, HTTP/1.1</li>
-					<li><span class="orange">Request Method:</span> <span class="blue">GET</span>, <span class="green">POST</span>, PUT, HEAD, DELETE, CONNECT, etc...</li>
-					<li><span class="orange">Request Parameters:</span> <span class="blue">query string</span> v.s. <span class="green">body</span></li>
+					<li><span class="orange">Request Method:</span> <span class="pink">GET</span>, <span class="green">POST</span>, PUT, HEAD, DELETE, CONNECT, etc...</li>
+					<li><span class="orange">Request Parameters:</span> <span class="pink">query string</span> v.s. <span class="green">body</span></li>
 					<li><span class="orange">Request Headers:</span> specifying hostname, content-length and content-type</li>
 				</ul>
 			</li>
@@ -702,224 +702,176 @@ for (var i = 0, p, el, els = this.elements; el = els[i]; i++) {
 	</article>
   </slide>
   <slide>
-  	<hgroup>
-      <h2>AJAX usage</h2>
-    </hgroup>
-    <article>to be continued next week</article>
-  </slide>
-  <!--slide>
     <hgroup>
       <h2>Introduction to AJAX</h2>
     </hgroup>
     <article>
 		<ul class="build">
-			<li><span class="green">Demonstration: </span>
-				<iframe src="https://secure.ie.cuhk.edu.hk/~fph008/phfung/ierg4210/2012fall/incl/04-ajaxForm.html" style="height:210px"></iframe></li>
-			<li>Advantages:
-				<ul class="build">
-					<li><span class="orange">Modern user experience</span>
-						<ul class="smaller">
-							<li> Eliminate page-load effect, i.e. no blank screen</li>
-						</ul>
-					</li>
-					<li><span class="orange">Using the well-known <code class="green">XMLHttpRequest</code> API</span>
-						<ul class="smaller">
-							<li>Sends requests at background; not limited to only send form data :)</li>
-						</ul>
-					</li>
-					<li><span class="orange">Cancel the default form submissions</span>
-						<ul class="smaller">
-							<li>returns <code>false</code> in the <code>submit</code> event</li>
-						</ul>
-					</li>
+			<li><span class="orange">Asynchonous <code class="orange">XMLHttpRequest</code> API</span>
+				<ul class="smaller">
+					<li>Sends a request <span class="purple">asynchronously</span> at background; does not block other processing</li>
 				</ul>
+			</li>
+			<li><span class="blue">Modern user experience</span>
+				<ul class="smaller">
+					<li>Load the delta but not the whole page. Eliminate page-load effect, i.e. blank screen</li>
+				</ul>
+			</li>
+			<li><span class="green">Simple Implementation</span>
+				<pre class="prettyprint lessmargin smaller" data-lang="js">
+var xhr = window.XMLHttpRequest
+		? new XMLHttpRequest()                     // IE7+, Firefox1+, Chrome1+, etc
+		: new ActiveXObject("Microsoft.XMLHTTP");  // IE 6
+
+xhr.open('GET', 'deltaPage.html', true);           // async = true as 3rd param
+// register a callback function to listen to readystatechange
+<b>xhr.onreadystatechange = function(){
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        alert(xhr.responseText);
+    }
+};</b>
+xhr.send(null);
+/* ... do something else */</pre>
+			</li>
+		</ul>
+		<div class="source">Ref: <a href="https://developer.mozilla.org/en/AJAX/Getting_Started">https://developer.mozilla.org/en/AJAX/Getting_Started</a></div>
+    </article>
+  </slide>
+  <slide>
+	<hgroup>
+		<h2>AJAX Form Submission</h2>
+	</hgroup>
+	<article>
+		<ul class="build">
+			<li><div class="orange">Demonstration</div>
+				<iframe src="incl/04-ajaxForm.html" style="height:180px;width:400px;margin:20px"></iframe>
+			</li>
+			<li>
+				<ul>
+					<li>(1) Listen to <code>submit</code> event</li>
+					<li>(2) Cancel the default form submission</li>
+					<li>(3) Craft a POST request to send over AJAX</li>
+					<li>(4) On feedback received, echo the feedback</li>
+				</ul>
+			</li>
+			<li>(Demo) Sniff the request generated. Same as <a href="#6">Slide #6</a>.</li>
+			<li class="smaller">File uploads over AJAX not covered, but will be needed in phase 3.<br/> You may check <a href="https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications">Using files from web applications</a> for reference.</li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+	<hgroup>
+		<h2>AJAX Form Submission: Implementation (1/4)</h2>
+	</hgroup>
+	<article>
+		<ul class="build">
+			<li><span class="orange">(1) Listen to the <code>submit</code> event</span>
+				<pre class="prettyprint" data-lang="js">
+<b>document.getElementById('loginForm').addEventListener('submit', function(e){</b>
+    /* complete step (2), (3), (4) */
+<b>}, false);</b>
+</pre>
+				<p class="smaller">Can we listen to the click event of submit button instead? What're the pros/cons?</p>
+			</li>
+			<li><span class="orange">(2) Cancel the default form submission</span>
+				<pre class="prettyprint" data-lang="js">
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    // Always cancel the default submission
+    <b>e.preventDefault();</b>
+    /* complete step (3), (4) */
+}, false);
+</pre>
 			</li>
 		</ul>
     </article>
   </slide>
   <slide>
 	<hgroup>
-		<h2>AJAX: Simplest Implementation</code></h2>
+		<h2>AJAX Form Submission: Implementation (2/4)</h2>
 	</hgroup>
 	<article>
-		<div class="build">
-			<pre class="prettyprint lessmargin smaller linenums" data-lang="js">
-var xhr = (window.XMLHttpRequest) 
-		? new XMLHttpRequest()                     // IE7+, Firefox1+, Chrome1+, etc
-		: new ActiveXObject("Microsoft.XMLHTTP"),  // IE 6
-	async = true;
-
-// open the connection
-xhr.open('GET', 'grab-some.html', async);
-
-// register a callback function to listen on readystatechange
-xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4 && xhr.status == 200) {
-        // copy the response to an element called el
-        el.innerHTML = xhr.responseText;
-    }
-};
-
-// send the request
-xhr.send(null);
-</pre>
-		</div>
-		<div class="source">Ref: <a href="https://developer.mozilla.org/en/AJAX/Getting_Started">https://developer.mozilla.org/en/AJAX/Getting_Started</a></div>
-    </article>
-  </slide>
-  <slide>
-    <hgroup>
-      <h2>AJAX: Advanced Implementation</h2>
-    </hgroup>
-    <article>
-		<div class="build">
-			<pre class="prettyprint lessmargin smaller" data-lang="js">
-// e.g to call, myLib.ajax({url:'process.php?q=hello',success:function(m){alert(m)}});
-  myLib.ajax = function(opt) { opt = opt || {};
-    var xhr = (window.XMLHttpRequest) 
-            ? new XMLHttpRequest()                     // IE7+, Firefox1+, Chrome1+, etc
-            : new ActiveXObject("Microsoft.XMLHTTP"),  // IE 6
-        async = opt.async !== false,
-        success = opt.success || null, error = opt.error || function(){/*displayErr()*/};
-    // pass three parameters, otherwise the default ones, to xhr.open()
-    xhr.open(opt.method || 'GET', opt.url || '', async);
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-  };</pre>
-  
-  <pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-375px;box-shadow:none;border:0">
-    if (opt.method == 'POST') 
-      xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  </pre>
-  <pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-315px;box-shadow:none;border:0;background:#FFB">
-    // Asyhronous Call requires a callback function listening on readystatechange
-    if (async)
-      xhr.onreadystatechange = function(){
-
-	  
-	  
-	  
-	  
-	  
-	  
-      };
-    xhr.onerror = function(){error.call(xhr)};
-    // POST parameters encoded as opt.data is passed here to xhr.send()
-    xhr.send(opt.data || null);
-    // Synchronous Call blocks UI and returns result immediately after xhr.send()
-    !async &amp;&amp; success &amp;&amp; success.call(xhr, xhr.responseText);</pre>
-	<pre class="prettyprint lessmargin smaller" data-lang="js" style="margin:0;margin-top:-255px;box-shadow:none;border:0;background:#FF6">
-        if (xhr.readyState == 4) {
-		  var status = xhr.status;
-          if ((status &gt;= 200 &amp;&amp; status &lt; 300) || status == 304 || status == 1223)
-            success &amp;&amp; success.call(xhr, xhr.responseText);
-          else if (status &lt; 200 || status &gt;= 400)
-            error.call(xhr);
-        }</pre>
-		</div>
-		<div class="source">Ref: <a href="https://developer.mozilla.org/en/AJAX/Getting_Started">https://developer.mozilla.org/en/AJAX/Getting_Started</a></div>
-    </article>
-  </slide>
-  <slide>
-    <hgroup>
-      <h2>AJAX Form Submission (1/2)</h2>
-    </hgroup>
-    <article>
-		<ul class="build lessmargin">
-			<li class="orange">More on how to submit a form over the last AJAX function:</li>
-			<li>1. To build request parameters based on input controls (ref: <a href="?#5">p.5</a>)
-<pre class="prettyprint lessmargin smaller" data-lang="js">
-// Example call: param = new myLib.formData(document.getElementById('form1')).toString()
-// i.e. to be used at <code>xhr.send(param)</code> (POST) or <code>xhr.open('GET', url+'?'+param, true)</code> (GET)
-myLib.formData = function(form) {
-  // a private array for storing all parameters
-  this.data = [];
-  for (var i = 0, j = 0, name, el, els = form.elements; el = els[i]; i++) {
-    // skip those useless elements
-    if (el.disabled || el.name == '' 
-         || ((el.type == 'radio' || el.type == 'checkbox') &amp;&amp; !el.checked))
-      continue;
-    // add those useful to the data array
-    this.append(el.name, el.value);
-  }
-};
-// public methods of myLib.formData
-myLib.formData.prototype = {
-  // output the required final POST parameters, e.g. a=1&amp;b=2&amp;c=3
-  toString: function(){
-    return this.data.join('&amp;');
-  },
-  // encode the data with the built-in function encodeURIComponent
-  append: function(key, val){
-    this.data.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
-  }
+		<ul class="build">
+			<li><span class="orange">(3) Craft a POST request to send over AJAX</span> - <span class="purple">(a) Serialize Parameters</span>
+				<pre class="prettyprint" data-lang="js" contenteditable>
+function serializeFormData(form) {
+  <b>return [].map.call(form.elements, function(el) {
+    if (el.name && !el.disabled)
+      return [el.name, el.value].map(encodeURIComponent).join('=');
+    return '';
+  }).join('&');</b>
 };</pre>
+				<div class="smaller build">
+					<div>Advanced Version that takes care of multi-valued elements:</div>
+					<pre class="prettyprint smaller" data-lang="js" contenteditable>
+if (el.name && !el.disabled <b>&& (!el.type || el.type.toLowerCase() !== 'checkbox' || el.checked)</b>) {
+  <b>if (el.tagName === 'SELECT' && el.hasAttribute('multiple')) 
+    return [].map.call(el.selectedOptions, function(o) {
+       return [el.name, o.value].map(encodeURIComponent).join('=');
+    }).join('&');</b>
+  return [el.name, el.value].map(encodeURIComponent).join('=');
+}</pre>
+				</div>
+			</li>
+		</ul>
+		<p class="source">Ref: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.prototype.map()</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">encodeURIComponent</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement">HTML Input Element API</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement">HTML Textarea Element API</a>, and <a href="https://developer.mozilla.org/en/docs/Web/API/HTMLSelectElement">HTML Select Element API</a></p>
+    </article>
+  </slide>
+  <slide>
+	<hgroup>
+		<h2>AJAX Form Submission: Implementation (3/4)</h2>
+	</hgroup>
+	<article>
+		<ul class="build">
+			<li><span class="orange">(3) Craft a POST request to send over AJAX</span> - <span class="purple">(b) AJAX POST Request</span>
+				<pre class="prettyprint" data-lang="js" contenteditable>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  <b>var xhr = new XMLHttpRequest(), method = this.getAttribute('method');
+  xhr.open(method, this.getAttribute('action'), true);
+
+  // config the default request header as required by POST
+  if (method.toLowerCase() === 'post')
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200)
+      /* complete step (4) */
+  };
+
+  xhr.send(serializeFormData(this));</b>
+}, false);
+</pre>
 			</li>
 		</ul>
     </article>
   </slide>
   <slide>
-    <hgroup>
-      <h2>AJAX Form Submission (2/2)</h2>
-    </hgroup>
-    <article>
-		<ul class="build lessmargin">
-			<li>2. To build a function to submit over AJAX
-				<pre class="prettyprint lessmargin smaller" data-lang="js">
-myLib.submit = function(form, successCallback) {
-  // Given in page 17, myLib.validate() returns whether the form is validated
-  // Hence, submit the form over AJAX only if it is properly validated
-  myLib.validate(form) && myLib.ajax({
-    method: 'POST',
-    url: form.getAttribute('action') || 'admin-process.php',
-    data: new formData(form).toString(),
-    success: successCallback
-  });
-  return false;
-};</pre></li>
-  			<li>3. To make an AJAX form, register a submit event listener to it
-				<pre class="prettyprint lessmargin smaller" data-lang="js">
-  document.getElementById('loginForm').onsubmit = function(){
-    // false is always returned to cancel the default submission
-    return myLib.submit(this, function(serverResponse){
-		alert('OK!' + serverResponse);
-    });
-  }</pre>
-				<span class="smaller">With step 1 & 2 provided, step 3 is what most used in your assignment. <span class="green">Easy? :)</span></span></li>
+	<hgroup>
+		<h2>AJAX Form Submission: Implementation (4/4)</h2>
+	</hgroup>
+	<article>
+		<ul class="build">
+			<li><span class="orange">(4) On feedback received, echo the feedback</span>
+				<pre class="prettyprint" data-lang="js" contenteditable>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var xhr = new XMLHttpRequest(), method = this.getAttribute('method');
+  xhr.open(method, this.getAttribute('action'), true);
+  if (method.toLowerCase() === 'post')
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200)
+      <b>var resp = this.responseText;
+      document.getElementById('result').innerHTML = resp.replace(/&lt;/g, '&amp;lt;');</b>
+  };
+  xhr.send(serializeFormData(this));
+}, false);
+</pre>
+			</li>
+			<li>In practice, we often use a library like <a href="https://github.com/visionmedia/superagent">superagent</a> or <a href="https://jquery.com/">jquery</a> to make AJAX calls</li>
 		</ul>
     </article>
-  </slide-->
+  </slide>
   <slide>
     <hgroup>
       <h2>XMLHttpRequest</h2>

@@ -1,0 +1,475 @@
+﻿<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Server-side Form Handling | IERG4210 Web Programming and Security</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <meta name="viewport" content="initial-scale=0.8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <hgroup class="auto-fadein">
+      <h1 data-config-title>Server-side Form Handling</h1>
+      <h2 data-config-subtitle>IERG4210 Lecture 5</h2>
+      <p data-config-presenter>Dr. Adonis Fung <br/> Information Engineering, CUHK <br/> Paranoids, Yahoo!<br/><br/>IERG4210 Web Programming and Security, 2015 Spring. <br/>Offered by Dept. of Information Engineering, The Chinese University of Hong Kong. <br/><br/>Copyright. Dr. Adonis Fung</p>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Agenda</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li><span class="orange">Web Server Comparisons</span></li>
+			<li><span class="green">Fast and Scalable Web Application</span>
+				<ul class="smaller">
+					<li>Application Framework using Express</li>
+					<li>Templated Rendering using ExpressHandlerbars</li>
+				</ul>
+			</li>
+			<li><span class="purple">Server-side Form Handling</span>
+				<ul class="smaller">
+					<li>Input Validations</li>
+					<li>Output Formats (HTML/JSON/XML)</li>
+					<li>Output Sanitizations (to be detailed next week)</li>
+				</ul>
+			</li>
+		</ul>
+    </article>
+  </slide>
+
+<slide>
+    <hgroup>
+      <h2>Web Server</h2>
+    </hgroup>
+    <article>
+		<ul class="build">
+			<li><span class="orange">Recall</span>: HTTP is a text-based application-layer protocol that defines how content is requested from a client application and served by a web server.</li>
+			<li><img src="incl/04-http.png" style="width:75%;margin:0 17%"/></li>
+		</ul>
+    </article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Web Server Choices</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+			<li><a href="http://news.netcraft.com/archives/category/web-server-survey/">Market share</a>: Apache > IIS > Nginx >> Node</li>
+			<li><table>
+					<tr>
+						<th width="16%"></th>
+						<th width="19%">Apache</th>
+						<th width="19%">IIS</th>
+						<th width="23%">Nginx</th>
+						<th width="23%">Node</th>
+					</tr>
+					<tr>
+						<td>Concurrency Model</td>
+						<td colspan="2">threaded / process-oriented approach<br/>(inefficient memory use and scheduling)</td>
+						<td colspan="2" class="highlight">asynchronous event-driven approach<br/>(no blocking, more scalable)</td>
+					</tr>
+					<tr>
+						<td>Common Programming Language</td>
+						<td>PHP</td>
+						<td>ASP.NET/PHP</td>
+						<td>None/PHP</td>
+						<td>JavaScript</td>
+					</tr>
+					<tr>
+						<td>Design Goals</td>
+						<td colspan="2">full-featured<br/>generic purpose</td>
+						<td>less features/footprint<br/>specific purpose (e.g., cache/proxy)</td>
+						<td>specific purpose<br/>app framework bundled w/web server</td>
+					</tr>
+					<tr>
+						<td>OS</td>
+						<td>mostly *nix</td>
+						<td>M$ windows</td>
+						<td>mostly *nix</td>
+						<td>mostly *nix</td>
+					</tr>
+					<tr>
+						<td>Open-source</td>
+						<td>open-source<br/>(no upfront cost)</td>
+						<td>proprietary<br/>(requires licensing)</td>
+						<td>open-source<br/>(no upfront cost)</td>
+						<td>open-source<br/>(no upfront cost)</td>
+					</tr>
+				</table>
+			</li>
+		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Fast and Scalable WebApp using Node.js</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+			<li><span class="orange">Event-driven architecture and non-blocking I/O API</span> from ground-up
+				<ul>
+					<li>Model best for slow/blocking (network) I/Os, now asynchronously handled</li>
+					<li>Benefits and Concepts covered in last lecture and reading</li>
+					<li>Resource efficient. Can easily scale up with Amazon Beanstalk</li>
+					<li>Unlike optionally async with a library (e.g., <a href="https://twistedmatrix.com/">Twisted</a> in Python)</li>
+				</ul>
+			</li>
+			<li><span class="blue">Code reuse due to single language</span> across both client and server side
+				<ul>
+					<li>Developer-friendly to JS/AJAX folks</li>
+				</ul>
+			</li>
+			<li><span class="purple">Fast v8 JavaScript Engine (as in Chrome)</span>
+				<ul>
+					<li>JIT Compilation: Compiled to binary, and runs like executable</li>
+					<li>Memory more efficient and Faster than vanilla PHP (FB made <a href="http://hhvm.com/">HipHop VM</a>)</li>
+				</ul>
+			</li>
+			<li><span class="green">Rapid Adoptions:</span>
+				<ul>
+					<li>Yahoo, Paypal, Walmart, Rakuten, Groupon, LinkedIn, Microsoft, etc.</li>
+				</ul>
+			</li>
+  		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Node.js HTTP Server</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li>HTTP is a <a href="https://nodejs.org/about/">first class citizen</a>
+  				<ul>
+					<li>Built-in HTTP library, doing away with Apache/IIS/Nginx</li>
+				</ul>
+			</li>
+			<li><span class="orange">A Sample Hello World HTTP server:</span>
+				<pre class="prettyprint" data-lang="server.js">
+var http = require('http');
+http.createServer(<b>function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end('&lt;h1>Hello World&lt;/h1>');
+}</b>).listen(3000, "localhost");
+</pre>
+				<pre class="prettyprint" data-lang="shell">
+$ node server.js</pre>
+			</li>
+			<li><span class="purple">Event-driven paradigm</span>
+				<ul>
+					<li>Create a HTTP server binded to port 3000 of localhost</li>
+					<li>Execute the callback per request</li>
+				</ul>
+			</li>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>NPM - Pacakge Manager for Node.js</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li><span class="blue">Package Manager</span>: Simplify deployment by auto-resolving dependencies
+  				<ul class="build">
+					<li><span class="green">A specification standard</span> of (dev)dependencies<br/>
+					<div class="smaller"><em>devDependencies</em> refers to those needed only during development but not runtime</div>
+					- <span class="pink">NPM</span>: <code>package.json</code> specifies the required packages
+					</li>
+					<li><span class="orange">A repository</span> to host packages published by developers<br/>
+					- <span class="pink">NPM</span>: <a href="https://www.npmjs.com/">https://www.npmjs.com/</a>
+					</li>
+					<li><span class="purple">A CLI toolset</span> to recursively install/manage required dependencies and versions<br/>
+				    - <span class="pink">NPM</span>: <code>npm install</code> looks for <code>./package.json</code>, and recursively installs all dependency packages <br/>
+					<p class="smaller">- <span class="pink">NPM</span>: <code>npm install &lt;packageName> --save</code> downloads packageName and marks it dependent in your package.json<br/>
+					- <span class="pink">NPM</span>: <code>npm install &lt;packageName> --save-dev</code> downloads packageName and marks it devDependent in your package.json</p>
+					</li>
+				</ul>
+			</li>
+			<li class="smaller">Note: (1) <code>pip</code> is the package manager for python; (2) Amazon Beanstalk runs <code>npm install</code> on your package during remote deployment; </li>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Web Application using ExpressHandlebars</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li>Delivering as an <span class="orange">Interactive Workshop</span>
+  				<ul>
+  					<li>25 min. Get prepared with your laptop</li>
+  					<li>Some walkthroughs and demonstrations</li>
+  					<li>Teaching teams then workaround to help</li>
+  				</ul>
+  			</li>
+  			<li><span class="pink">Quick Started:</span>
+  				<ul>
+		  			<li>Prerequisite: <br/><a href="https://github.com/ierg4210/shop-samples/blob/master/README.md">install Node.js and init a new project</a></li>
+		  			<li>Install dependencies:<br/><code>npm install express body-parser express-handlebars --save</code></li>
+		  			<li>Sample code using <a href="https://github.com/ericf/express-handlebars/tree/master/examples/basic">ExpressHandlebars</a></li>
+  				</ul>
+  			</li>
+  		</ul>
+  	</article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Modularize your files</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li><span class="orange">Modularizing Static Functions into a separate file</span>
+          <pre class="prettyprint" data-lang="lib/ierg4210-static.js">
+exports.hello = function () { console.log('hello') };</pre>
+          <pre class="prettyprint" data-lang="app.js">
+var ierg4210 = require('./lib/ierg4210-static');
+ierg4210.hello();</pre>
+        </li>
+        <li><span class="green">Modularizing an Object into a separate file</span>
+          <pre class="prettyprint" data-lang="lib/ierg4210-object.js">
+module.exports = function Person(name) {this.name = name;}
+Person.prototype.getName = function() {return this.name;}; </pre>
+          <pre class="prettyprint" data-lang="app.js">
+var Person = require('./lib/ierg4210-object');
+var peter = new Person('Peter', 'M');
+peter.getName();</pre>
+        </li>
+        <li class="pink">Tips: Modularize your routes. Keep your server.js succinct.</li>
+      </ul>
+    </article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Server-side Form Handling</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li>Recall how you send a request header/body: <a href="#6">Lecture 4 slide #6</a></li>
+  			<li>Retrieving request parameters from <span class="orange">path, querystring, and body</span>
+  				<ul>
+  					<li><pre class="prettyprint" data-lang="js" contenteditable>
+// for parsing application/x-www-form-urlencoded
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use('/process/:action(\w*)', function(req, res){
+  <b>// refers to params named "action" (e.g., /process/abc)
+  console.log('params: ' + req.params.action);
+  // refers to query string named "q" (e.g., /process?q=abc)
+  console.log('query: ' + req.query.q);
+  // refers to POST parameter named "q"
+  console.log('post: ' + req.body.q);</b>
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end('&lt;h1>Hello World!&lt;/h1>');
+});
+</pre></li>
+  				</ul>
+  				<p class="smaller">Ref: <a href="http://expressjs.com/api.html">Express API</a></p>
+  			</li>
+  		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Input Validations</h2>
+  	</hgroup>
+  	<article>
+		<ul class="build">
+			<li><span class="red">Root Cause:</span> <span class="orange">User Inputs are always untrusted!</span>
+				<ul class="build">
+					<li>Unexpected user inputs could lead to unauthorized executions</li>
+					<li><span class="pink">Input validation problems ranked constantly high</span> in 2007, 2010, 2013 <br/>by <a href="https://www.owasp.org/index.php/Top_10_2013-Top_10">OWASP Top 10 Application Security Risks</a></li>
+					<li>In 2013, those include: A1 <a href="https://www.owasp.org/index.php/Top_10_2013-A1-Injection">Injection</a>, A3 <a href="https://www.owasp.org/index.php/Top_10_2013-A3-Cross-Site_Scripting_%28XSS%29">Cross-site Scripting</a>, A4 <a href="https://www.owasp.org/index.php/Top_10_2013-A4-Insecure_Direct_Object_References">Insecure Direct Object References</a>
+					</li>
+				</ul>
+			</li>
+			<li><span class="green">Fundamental Defences:</span> Restrict user inputs
+				<ul class="build">
+					<li><span class="purple">Input Validations</span> - pattern restrictions
+						<ul class="smaller">
+							<li><span class="purple">blacklist</span> malicious patterns: harder to sort out what's bad</li>
+							<li><span class="purple">whitelist</span> acceptable patterns: easier to pin down the allowed space, hence whitelist whenever possible</li>
+						</ul>
+					</li>
+					<li><span class="purple">Input Sanitizations/Encoding</span> - escape sensitive chars. to stop executions
+						<ul class="smaller">
+							<li>Type casting: <code>untrusted = parseInt(untrusted)</code> enforces an integer in JavaScript</li>
+					<li>Escape characters: prevent SQL injection (to be covered)</li></ul></li>
+				</ul>
+			</li>
+		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Server-side Input Validations and Sanitizations</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li>
+  				<pre class="prettyprint" data-lang="js" contenteditable>
+app.use('/process', function(req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+
+  <b>// input validation
+  var InputRegExp = /^\w+$/;
+  if (![req.body.firstname, req.body.lastname]
+       .every(function(input){return InputRegExp.test(input);})) {
+    res.end('Incorrect Inputs');
+    return;
+  }
+  // input sanitization
+  req.body.age = parseInt(req.body.age);
+  </b>
+
+  // further processing only after proper validations and sanitizations
+  res.end('&lt;h1>Hello, ' + req.body.firstname + req.body.lastname + ' &lt;/h1>');
+});
+</pre>
+			</li>
+			<li class="smaller">In practice: use a validator package like <a href="https://www.npmjs.com/package/validator">validator</a> or <a href="https://www.npmjs.com/package/express-validator">express-validator</a> to help yourself</li>
+		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Server-side Input Validations and Sanitizations Using <a href="https://www.npmjs.com/package/express-validator">ExpressValidator</a></h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li>
+  				<pre class="prettyprint smaller" data-lang="js" contenteditable>
+var app = require('express')(),
+  bodyParser = require('body-parser'),
+  <b>expressValidator = require('express-validator')</b>;
+
+app.use(bodyParser.urlencoded({extended:true}));
+<b>app.use(expressValidator());</b>
+
+app.use('/process', function(req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'});
+
+  <b>// input validation
+  req.checkBody('firstname', 'Invalid first name').notEmpty().isAlphanumeric();
+  req.checkBody('lastname', 'Invalid last name').notEmpty().isAlphanumeric();
+  // input sanitization
+  req.sanitize('age').toInt();
+  var errors = req.validationErrors();
+  if (errors) {
+    res.send('Errors: ' + JSON.stringify(errors), 400);
+    return;
+  }</b>
+  // further processing only after proper validations and sanitizations
+  res.end('&lt;h1>Hello, ' + req.body.firstname + req.body.lastname + ' &lt;/h1>');
+});
+</pre>
+			</li>
+		</ul>
+  	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Server-side v.s. Client-side Input Validations</h2>
+  	</hgroup>
+  	<article>
+		<ul class="build">
+			<li>Reiterating once again, apply validations at:
+				<ul>
+  					<li><span class="red"><em>server-side</em> for security enforcement</span> </li>
+					<li><em>client-side</em> for user experience enhancement</li>
+					<li class="smaller"><span class="green">Reason</span>: client validation code is shipped to client, which can freely be manipulated and bypassed at browsers, while server logic is hidden from clients and will send only the resulted HTML. The computation integrity of validations can thus be protected.</li>
+				</ul>
+			</li>
+			<li><span class="pink">Security Best Practice:</span>
+				<ul>
+					<li>Keep server- and client-side input validations as consistent as possible!!</li>
+					<li>Intrinsic advantage of Node.js: code/pattern reuse across client- and server-side</li> 
+				</ul>
+			</li>
+		</ul>
+	</article>
+  </slide>
+  <slide>
+  	<hgroup>
+  		<h2>Output Formats</h2>
+  	</hgroup>
+  	<article>
+  		<ul class="build">
+  			<li><span class="orange">HTML</span>
+  				<ul class="smaller">
+  					<li>Response size too bulky (bandwidth, latency)</li>
+  					<li>Take server resources for data binding with templates</li>
+  				</ul>
+  			</li>
+  			<li><span class="green">JavaScript Object Notation (<a href="http://www.json.org/">JSON</a>)</span>
+  				<ul class="smaller">
+  					<li>Compact in response size. Fast JSON parser.</li>
+  					<li>Facilitate shifting data binding and UI work to client-side</li> 
+  				</ul>
+  			</li>
+  			<li style="color:#AAA">XML
+  				<ul class="smaller">
+  					<li>As bulky as HTML. Slower than JSON parser</li>
+  					<li>Used in legacy web services supporting <a href="http://en.wikipedia.org/wiki/SOAP">SOAP</a></li>
+  				</ul><br/>
+  			</li>
+  			<li>(Demo) <span class="purple">In practice:</span>
+  			Render minimal HTML at server-side (using templating framework like ExpressHandlebars). Do data binding with subtemplate at client-side (using Handlebars)</li>
+  		</ul>
+  	</article>
+  </slide>
+  <slide>
+    <hgroup>
+      <h2>Some Logistics...</h2>
+    </hgroup>
+    <article>
+      <ul class="build">
+      	<li class="red">Assignment Phase 2 Deadline: Feb 4, 2015, 5PM</li>
+      	<li>Self-studying PHP to enrich your knowledge and profile
+      		<ul>
+      			<li><a href="05-ref-ServerSideFormHandlingPHP.pdf">Lecture Notes in 2012</a></li>
+      		</ul>
+      	</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-23136362-2', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
