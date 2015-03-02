@@ -1,0 +1,16 @@
+<html>
+<body>
+<h1 id="title">Cross-Frame Access Demonstration</h1>
+<div id="content"></div>
+<script type="text/javascript">
+var x = 1;
+window.setTimeout(function(){
+	document.getElementById('content').innerHTML = 
+		  'sameOrigin iframe\'s y = ' + window.frames[0].window.y + '<br/>'
+		+ 'crossOrigin iframe\'s y = ' + window.frames[1].window.y;
+}, 1000);
+</script>
+<iframe src="08-sop-iframe.html"></iframe>
+<iframe id="crossOriginIframe" src="https://course.ie.cuhk.edu.hk/~ierg4210/lectures/incl/08-sop-iframe.html"></iframe>
+</body>
+</html>

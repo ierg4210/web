@@ -1,0 +1,10 @@
+<html>
+<body>
+<h1>Some iframe content</h1>
+<script type="text/javascript">
+y = 2;
+document.write('parent\'s x = ' + top.window.x);
+parent.document.getElementById('title').innerHTML += ' (edited by iframe)';
+</script>
+</body>
+</html>
