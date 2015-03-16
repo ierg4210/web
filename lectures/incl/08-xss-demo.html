@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>XSS Filter Evasion Test</title>
+<meta charset="UTF-8">
+<style type="text/css">
+fieldset{width:400px;margin:10px}
+form label{clear:left;float:left;width:150px;line-height:23px}
+form div{padding:4px 0}
+form input[type=text],input[type=number],input[type=password],select,textarea{width:200px}
+form input[type=submit]{clear:both}
+#outputs div{padding:0px 30px}
+.hide{display:none}
+.clear{clear:both}
+</style>
+</head>
+
+<body>
+<h1>XSS Filter Evasion Test</h1>
+<fieldset form="form1">
+	<legend>User Inputs</legend>
+	<form id="form1" method="GET">
+		<label>Generic Text:</label>
+		<div><input type="text" name="text" value="<script>alert(1)</script>Hello"/></div>
+		<label>Full URL:</label>
+		<div><input type="text" name="uri" value="https://www.yahoo.com" /></div>
+		<label>URL Path:</label>
+		<div><input type="text" name="uriPath" value="/yahoo/xss-filters" /></div>
+		<label>URL Query:</label>
+		<div><input type="text" name="uriQuery" value="name=yahoo" /></div>
+		<label>URL Component:</label>
+		<div><input type="text" name="uriComponent" value="yahoo" /></div>
+		<label>URL Fragment:</label>
+		<div><input type="text" name="uriFragment" value="yahoo" /></div>
+		<label>Disable <a href="https://github.com/yahoo/xss-filters">xss-filters</a>:</label>
+		<div><input type="checkbox" name="disable" value="1" /></div>
+		<label>&nbsp;</label><div><input type="submit"/></div>
+	</form>
+</fieldset>
+
+<fieldset id="outputs" class="hide">
+	<legend id="outputLegend"></legend>
+	<label>Text:</label>
+	<div id="output-data"></div>
+	<label>Full URL:</label>
+	<div id="output-uri"></div>
+	<label>URL Path:</label>
+	<div id="output-uriPath"></div>
+	<label>URL Query:</label>
+	<div id="output-uriQuery"></div>
+	<label>URL Component:</label>
+	<div id="output-uriComponent"></div>
+	<label>URL Fragment:</label>
+	<div id="output-uriFragment"></div>
+</fieldset>
+
+<script type="application/javascript" src="xss-filters.min.js"></script>
+<script type="application/javascript" src="jquery-2.1.3.min.js"></script>
+<script type="application/javascript">
+(function () {
+function el (A) {return document.getElementById(A)};
+
+el('form1').addEventListener('submit', function (e) {
+	e.preventDefault();
+	el('outputs').className = '';
+	el('outputLegend').innerHTML = !this.disable.checked ? 'Rendered Outputs with xss-filters' : 'Rendered Outputs (unsafe)';
+
+	function raw(input) {return input}
+	var xssFilters = !this.disable.checked ? window.xssFilters : {
+		inHTMLData: raw,
+		inHTMLComment: raw,
+		inSingleQuotedAttr: raw,
+		inDoubleQuotedAttr: raw,
+		inUnQuotedAttr: raw,
+		uriInHTMLData: raw,
+		uriInHTMLComment: raw,
+		uriInSingleQuotedAttr: raw,
+		uriInDoubleQuotedAttr: raw,
+		uriInUnQuotedAttr: raw,
+		uriPathInHTMLData: raw,
+		uriPathInHTMLComment: raw,
+		uriPathInSingleQuotedAttr: raw,
+		uriPathInDoubleQuotedAttr: raw,
+		uriPathInUnQuotedAttr: raw,
+		uriQueryInHTMLData: raw,
+		uriQueryInHTMLComment: raw,
+		uriQueryInSingleQuotedAttr: raw,
+		uriQueryInDoubleQuotedAttr: raw,
+		uriQueryInUnQuotedAttr: raw,
+		uriComponentInHTMLData: raw,
+		uriComponentInHTMLComment: raw,
+		uriComponentInSingleQuotedAttr: raw,
+		uriComponentInDoubleQuotedAttr: raw,
+		uriComponentInUnQuotedAttr: raw,
+		uriFragmentInHTMLData: raw,
+		uriFragmentInHTMLComment: raw,
+		uriFragmentInSingleQuotedAttr: raw,
+		uriFragmentInDoubleQuotedAttr: raw,
+		uriFragmentInUnQuotedAttr: raw
+	};
+
+	var input = this.text.value;
+	$('#output-data').html([
+		'     inHTMLData: ',                xssFilters.inHTMLData(input),
+		'<br/>inHTMLComment:         <!--', xssFilters.inHTMLComment(input),      '-->',
+		"<br/>inSingleQuotedAttr: <a id='", xssFilters.inSingleQuotedAttr(input), "'>", xssFilters.inHTMLData(input), "</a>",
+		'<br/>inDoubleQuotedAttr: <a id="', xssFilters.inDoubleQuotedAttr(input), '">', xssFilters.inHTMLData(input), '</a>',
+		'<br/>inUnQuotedAttr:     <a id=',  xssFilters.inUnQuotedAttr(input),     '>',  xssFilters.inHTMLData(input), '</a>'
+	].join(''));
+
+
+	input = this.uri.value;
+	$('#output-uri').html([
+		'     uriInHTMLData: ',                  xssFilters.uriInHTMLData(input),
+		'<br/>uriInHTMLComment:           <!--', xssFilters.uriInHTMLComment(input),      '-->',
+		"<br/>uriInSingleQuotedAttr: <a href='", xssFilters.uriInSingleQuotedAttr(input), "'>", xssFilters.uriInHTMLData(input), "</a>",
+		'<br/>uriInDoubleQuotedAttr: <a href="', xssFilters.uriInDoubleQuotedAttr(input), '">', xssFilters.uriInHTMLData(input), '</a>',
+		'<br/>uriInUnQuotedAttr:     <a href=',  xssFilters.uriInUnQuotedAttr(input),     '>', xssFilters.uriInHTMLData(input), '</a>'
+	].join(''));
+
+	input = this.uriPath.value;
+	$('#output-uriPath').html([
+		'     uriPathInHTMLData: ',                  xssFilters.uriPathInHTMLData(input),
+		'<br/>uriPathInHTMLComment:           <!--', xssFilters.uriPathInHTMLComment(input),      '-->',
+		"<br/>uriPathInSingleQuotedAttr: <a href='", xssFilters.uriPathInSingleQuotedAttr(input), "'>", xssFilters.uriPathInHTMLData(input), "</a>",
+		'<br/>uriPathInDoubleQuotedAttr: <a href="', xssFilters.uriPathInDoubleQuotedAttr(input), '">', xssFilters.uriPathInHTMLData(input), '</a>',
+		'<br/>uriPathInUnQuotedAttr:     <a href=',  xssFilters.uriPathInUnQuotedAttr(input),     '>', xssFilters.uriPathInHTMLData(input), '</a>'
+	].join(''));
+
+	input = this.uriQuery.value;
+	$('#output-uriQuery').html([
+		'     uriQueryInHTMLData: ',                    xssFilters.uriQueryInHTMLData(input),
+		'<br/>uriQueryInHTMLComment:           <!--x?', xssFilters.uriQueryInHTMLComment(input),      '-->',
+		"<br/>uriQueryInSingleQuotedAttr: <a href='x?", xssFilters.uriQueryInSingleQuotedAttr(input), "'>", xssFilters.uriQueryInHTMLData(input), "</a>",
+		'<br/>uriQueryInDoubleQuotedAttr: <a href="x?', xssFilters.uriQueryInDoubleQuotedAttr(input), '">', xssFilters.uriQueryInHTMLData(input), '</a>',
+		'<br/>uriQueryInUnQuotedAttr:     <a href=x?',  xssFilters.uriQueryInUnQuotedAttr(input),     '>', xssFilters.uriQueryInHTMLData(input), '</a>'
+	].join(''));
+
+	input = this.uriComponent.value;
+	$('#output-uriComponent').html([
+		'     uriComponentInHTMLData: ',                         xssFilters.uriComponentInHTMLData(input),
+		'<br/>uriComponentInHTMLComment:           <!--x?name=', xssFilters.uriComponentInHTMLComment(input),      '-->',
+		"<br/>uriComponentInSingleQuotedAttr: <a href='x?name=", xssFilters.uriComponentInSingleQuotedAttr(input), "'>", xssFilters.uriComponentInHTMLData(input), "</a>",
+		'<br/>uriComponentInDoubleQuotedAttr: <a href="x?name=', xssFilters.uriComponentInDoubleQuotedAttr(input), '">', xssFilters.uriComponentInHTMLData(input), '</a>',
+		'<br/>uriComponentInUnQuotedAttr:     <a href=x?name=',  xssFilters.uriComponentInUnQuotedAttr(input),     '>', xssFilters.uriComponentInHTMLData(input), '</a>'
+	].join(''));
+
+
+	input = this.uriFragment.value;
+	$('#output-uriFragment').html([
+		'     uriFragmentInHTMLData: ',                   xssFilters.uriFragmentInHTMLData(input),
+		'<br/>uriFragmentInHTMLComment:           <!--#', xssFilters.uriFragmentInHTMLComment(input),      '-->',
+		"<br/>uriFragmentInSingleQuotedAttr: <a href='#", xssFilters.uriFragmentInSingleQuotedAttr(input), "'>", xssFilters.uriFragmentInHTMLData(input), "</a>",
+		'<br/>uriFragmentInDoubleQuotedAttr: <a href="#', xssFilters.uriFragmentInDoubleQuotedAttr(input), '">', xssFilters.uriFragmentInHTMLData(input), '</a>',
+		'<br/>uriFragmentInUnQuotedAttr:     <a href=#',  xssFilters.uriFragmentInUnQuotedAttr(input),     '>', xssFilters.uriFragmentInHTMLData(input), '</a>'
+	].join(''));
+
+}, false);
+
+})();
+--></script>
+
+</body>
+
+</html>
